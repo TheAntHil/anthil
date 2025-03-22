@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "AntHil",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
