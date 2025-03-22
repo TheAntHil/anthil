@@ -1,0 +1,19 @@
+meta {
+  name: runs.create
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/api/v1/srv/runs/
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "code": "super-puper-dag",
+    "status": "done",
+    "start_time": "iso8601"
+  }
+}
