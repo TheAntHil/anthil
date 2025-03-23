@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from receives_a_signal.signal_handler import signal_processing
 
 app = Flask(__name__)
@@ -8,4 +8,4 @@ def index():
     data = request.get_json()
     result = signal_processing(data)
     print(result)  
-    return data
+    return jsonify(result)
