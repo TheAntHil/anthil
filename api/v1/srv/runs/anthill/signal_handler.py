@@ -1,6 +1,6 @@
 import uuid
 
-def signal_processing(data: dict) -> dict:
+def processing_signal(data: dict) -> dict:
     status = data["status"]
     start_time = data["start_time"]
     run_id = str(uuid.uuid4())
