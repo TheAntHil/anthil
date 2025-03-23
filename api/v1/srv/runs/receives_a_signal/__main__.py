@@ -1,4 +1,4 @@
-from receives_a_signalapp import app
+from receives_a_signal.server import app
 
 
 def main():
