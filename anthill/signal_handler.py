@@ -3,7 +3,7 @@ from datetime import datetime, UTC
 from typing import Any
 
 
-def processing_signal(data: dict[str, Any]) -> dict[str, Any]:
+def process_signal(data: dict[str, Any]) -> dict[str, Any]:
     status = data["status"]
     start_time = data["start_time"]
     run_id = str(uuid.uuid4())
