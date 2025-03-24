@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 import logging
-from anthill.signal_handler import processing_signal
+from anthill.signal_handler import process_signal
 
 
 logging.basicConfig(
@@ -13,12 +13,13 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
+
 @app.route("/api/v1/srv/runs/", methods=["POST"])
 def index():
     data = request.get_json()
-    logger.info(f"Received data: {data}")   
+    logger.info(f"Received data: {data}")
     try:
-        result = processing_signal(data)
+        result = process_signal(data)
         logger.info(f"Processing result: {result}")
         return jsonify(result)
     except Exception as e:

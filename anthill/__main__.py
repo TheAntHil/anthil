@@ -1,9 +1,10 @@
 from anthill.server import app
-from anthill.config import HOST, PORT, DEBUG
+from anthill.config import create_config
 
 
 def main():
-    app.run(host=HOST, port=PORT, debug=DEBUG)
+    config = create_config()
+    app.run(host=config.host, port=config.port, debug=config.debug)
 
 
 if __name__ == "__main__":
