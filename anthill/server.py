@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import logging
 from anthill.signal_handler import process_signal
+#from anthill.streaming_updates_signal_handler import updates_stream
 
 
 logging.basicConfig(
@@ -12,6 +13,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 app = Flask(__name__)
+#received_data = []
 
 
 @app.route("/api/v1/srv/runs/", methods=["POST"])
@@ -25,3 +27,9 @@ def index():
     except Exception as e:
         logger.error(f"Error processing request: {e}")
         return jsonify({"error": str(e)}), 500
+
+
+# @app.route("/api/v1/srv/runs/", methods=["GET"])
+# def stream():
+#     data = request.args
+#     return jsonify(data), 200
