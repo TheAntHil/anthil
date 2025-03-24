@@ -21,7 +21,7 @@ def index():
     try:
         result = process_signal(data)
         logger.info(f"Processing result: {result}")
-        return jsonify(result)
+        return jsonify(result), 201
     except Exception as e:
         logger.error(f"Error processing request: {e}")
         return jsonify({"error": str(e)}), 500

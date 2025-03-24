@@ -4,7 +4,7 @@ from typing import Any
 
 
 def process_signal(data: dict[str, Any]) -> dict[str, Any]:
-    status = 201
+    status = data["status"]
     start_time = data["start_time"]
     run_id = str(uuid.uuid4())
     job_id = str(uuid.uuid4())
