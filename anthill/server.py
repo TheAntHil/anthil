@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
 import logging
 from anthill.signal_handler import process_signal
-#from anthill.streaming_updates_signal_handler import updates_stream
+from anthill.run_handler import run_filtering_sorting
+from datetime import datetime as dt
 
 
 logging.basicConfig(
@@ -13,7 +14,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 app = Flask(__name__)
-#received_data = []
+runs = []
 
 
 @app.route("/api/v1/srv/runs/", methods=["POST"])
@@ -23,13 +24,22 @@ def index():
     try:
         result = process_signal(data)
         logger.info(f"Processing result: {result}")
+        runs.append(result)
         return jsonify(result), 201
     except Exception as e:
         logger.error(f"Error processing request: {e}")
         return jsonify({"error": str(e)}), 500
 
 
-# @app.route("/api/v1/srv/runs/", methods=["GET"])
-# def stream():
-#     data = request.args
-#     return jsonify(data), 200
+@app.route("/api/v1/srv/runs/", methods=["GET"])
+def get_runs():
+    after = dt.fromisoformat(request.args.get("after").replace(" ", "+"))
+    sort = request.args.get("orderby")
+    logger.info(f"Received request, parameters: after={after}, sort={sort}")
+    try:
+        result = run_filtering_sorting(runs, after, sort)
+        logger.info(f"Filtered and sorted runs: {result}")
+        return jsonify(result), 200
+    except Exception as e:
+        logger.error(f"An error occurred: {str(e)}")
+        return jsonify({"error": str(e)}), 500
