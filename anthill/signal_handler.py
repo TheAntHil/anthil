@@ -19,8 +19,8 @@ def process_signal(data: dict[str, Any]) -> Run:
     start_time = data["start_time"]
     run_id = str(uuid.uuid4())
     job_id = str(uuid.uuid4())
-    created_at = datetime.now(tz=UTC).isoformat()
-    updated_at = datetime.now(tz=UTC).isoformat()
+    created_at = datetime.now(tz=UTC)
+    updated_at = datetime.now(tz=UTC)
 
     return Run(
         run_id=run_id,

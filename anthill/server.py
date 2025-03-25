@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import logging
 from anthill.signal_handler import process_signal
-from anthill.run_handler import run_filtering_sorting
+from anthill.run_handler import filter_runs, sorting_runs
 from datetime import datetime as dt
 
 
@@ -37,9 +37,10 @@ def get_runs():
     sort = request.args.get("orderby")
     logger.info(f"Received request, parameters: after={after}, sort={sort}")
     try:
-        result = run_filtering_sorting(runs, after, sort)
-        logger.info(f"Filtered and sorted runs: {result}")
-        return jsonify(result), 200
+        filtered_run = filter_runs(runs, after)
+        sorted_result = sorting_runs(filtered_run, sort)
+        logger.info(f"Filtered and sorted runs: {sorted_result}")
+        return jsonify(sorted_result), 200
     except Exception as e:
         logger.error(f"An error occurred: {str(e)}")
         return jsonify({"error": str(e)}), 500
