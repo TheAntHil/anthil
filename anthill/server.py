@@ -35,11 +35,11 @@ def index():
 def get_runs():
     after = dt.fromisoformat(request.args.get("after").replace(" ", "+"))
     sort = request.args.get("orderby")
-    logger.info(f"")
+    logger.info(f"Received request, parameters: after={after}, sort={sort}")
     try:
         result = run_filtering_sorting(runs, after, sort)
-        logger.info(f"")
+        logger.info(f"Filtered and sorted runs: {result}")
         return jsonify(result), 200
     except Exception as e:
-        logger.error(f"{e}")
+        logger.error(f"An error occurred: {str(e)}")
         return jsonify({"error": str(e)}), 500
