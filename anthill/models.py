@@ -14,8 +14,8 @@ class Run(Base):
     updated_at: Mapped[datetime]
     start_time: Mapped[datetime]
 
-    def __repr__(self):
-        return f'<Run {self.run_id} {self.job_id} {self.status}>'
+    # def __repr__(self):
+    #     return f'<Run {self.run_id} {self.job_id} {self.status} {created_at}>'
 
 # if __name__ == "__main__":
 #     Base.metadata.create_all(bind=engine)
