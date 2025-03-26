@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 import logging
-from anthill.signal_handler import process_signal, convert_date_to_iso
+from anthill.signal_handler import process_signal, convert
 from anthill.run_handler import filter_runs, sort_runs
 from datetime import datetime as dt
 
@@ -25,7 +25,7 @@ def index():
         prepared_run = process_signal(run)
         logger.info(f"Processing result: {prepared_run}")
         runs.append(prepared_run)
-        converted_run = convert_date_to_iso(prepared_run)
+        converted_run = convert(prepared_run)
         return jsonify(converted_run), 201
     except Exception as e:
         logger.error(f"Error processing request: {e}")
@@ -40,7 +40,7 @@ def get_runs():
     try:
         filtered_run = filter_runs(runs, after)
         sorted_result = sort_runs(filtered_run, sort)
-        converted_runs = [convert_date_to_iso(run) for run in sorted_result]
+        converted_runs = [convert(run) for run in sorted_result]
         logger.info(f"Filtered and sorted runs: {converted_runs}")
         return jsonify(converted_runs), 200
     except Exception as e:
