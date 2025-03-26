@@ -1,9 +1,9 @@
 from anthill.server import app
-from anthill.config import create_config
+from anthill.config import create_server_config
 
 
 def main():
-    config = create_config()
+    config = create_server_config()
     app.run(host=config.host, port=config.port, debug=config.debug)
 
 
