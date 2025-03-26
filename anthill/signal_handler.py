@@ -31,7 +31,7 @@ def process_signal(data: dict[str, Any]) -> Run:
         updated_at=updated_at)
 
 
-def convert_date_to_iso(run: Run) -> dict:
+def convert_date_to_iso(run: Run) -> dict[str, Any]:
     converted_run = dc.asdict(run)
     for key, value in converted_run.items():
         if isinstance(value, datetime):
