@@ -1,6 +1,7 @@
 import dataclasses as dc
 import os
 from dotenv import load_dotenv
+import psycopg2
 
 
 load_dotenv()
@@ -20,26 +21,9 @@ def create_server_config() -> ServerConfig:
         debug=bool(os.getenv("DEBUG")))
 
 
-@dc.dataclass
-class DbConfig:
-    db_name: str
-    db_user: str
-    db_pass: str
-    db_host: str
-    db_port: int
-
-    @property
-    def db_url(self) -> str:
-        return (
-            f"postgresql://"
-            f"{self.db_user}:{self.db_pass}@"
-            f"{self.db_host}:{self.db_port}/"
-            f"{self.db_name}")
-
-
-db_config = DbConfig(
-    db_name=os.getenv("DB_NAME"),
-    db_user=os.getenv("DB_USER"),
-    db_pass=os.getenv("DB_PASSWORD"),
-    db_host=os.getenv("DB_HOST"),
-    db_port=int(os.getenv("DB_PORT")))
+def create_db_url() -> str:
+    return (
+        f"postgresql+psycopg2://"
+        f"{os.getenv("DB_USER")}:{os.getenv("DB_PASS")}@"
+        f"{os.getenv("DB_HOST")}:{int(os.getenv("DB_PORT"))}/"
+        f"{os.getenv("DB_NAME")}")
