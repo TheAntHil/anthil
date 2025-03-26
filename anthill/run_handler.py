@@ -10,7 +10,7 @@ def filter_runs(runs: list[Run], after: dt) -> list[Run]:
     return filtered_runs
 
 
-def sorter_runs(filtered_runs: list[Run], sort: str) -> list[Run]:
+def sort_runs(filtered_runs: list[Run], sort: str) -> list[Run]:
     return sorted(
         filtered_runs,
         key=lambda run: getattr(run, sort))
