@@ -16,7 +16,7 @@ class Run:
 
 def process_signal(data: dict[str, Any]) -> Run:
     status = data["status"]
-    start_time = data["start_time"]
+    start_time = datetime.fromisoformat(data["start_time"])
     run_id = str(uuid.uuid4())
     job_id = str(uuid.uuid4())
     created_at = datetime.now(tz=UTC)
@@ -31,9 +31,13 @@ def process_signal(data: dict[str, Any]) -> Run:
         updated_at=updated_at)
 
 
-def convert_date_to_iso(run: Run) -> dict[str, Any]:
-    converted_run = dc.asdict(run)
-    for key, value in converted_run.items():
-        if isinstance(value, datetime):
-            converted_run[key] = value.isoformat()
+def convert(run: Run) -> dict[str, Any]:
+    converted_run = {
+        "run_id": run.run_id,
+        "job_id": run.job_id,
+        "status": run.status,
+        "start_time": run.start_time.isoformat(),
+        "created_at": run.created_at.isoformat(),
+        "updated_at": run.updated_at.isoformat()
+    }
     return converted_run
