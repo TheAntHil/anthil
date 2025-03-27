@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import logging
-from anthill.signal_handler import process_signal, convert
-from anthill.run_handler import filter_runs, sort_runs
+from .signal_handler import process_signal, convert
+from .run_handler import filter_runs, sort_runs
 from datetime import datetime as dt
 
 

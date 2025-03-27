@@ -1,5 +1,5 @@
 from sqlalchemy.dialects.postgresql import UUID
-from anhill.db import Base, engine
+from .db import Base
 from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime
 import uuid
@@ -8,14 +8,17 @@ import uuid
 class Run(Base):
     __tablename__ = 'runs'
     run_id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
-    job_id: Mapped[uuid.UUID]
+    job_id: Mapped[int]
     status: Mapped[str]
     created_at: Mapped[datetime]
     updated_at: Mapped[datetime]
     start_time: Mapped[datetime]
 
-    # def __repr__(self):
-    #     return f'<Run {self.run_id} {self.job_id} {self.status} {created_at}>'
-
-# if __name__ == "__main__":
-#     Base.metadata.create_all(bind=engine)
+    def __repr__(self):
+        return (f'<Run\n'
+                f'{self.run_id}\n'
+                f'{self.job_id}\n'
+                f'{self.status}\n'
+                f'{self.created_at}\n'
+                f'{self.updated_at}\n'
+                f'{self.start_time}>')

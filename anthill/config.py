@@ -21,9 +21,5 @@ def create_server_config() -> ServerConfig:
         debug=bool(os.getenv("DEBUG")))
 
 
-def create_db_url() -> str:
-    return (
-        f"postgresql+psycopg2://"
-        f"{os.getenv("DB_USER")}:{os.getenv("DB_PASS")}@"
-        f"{os.getenv("DB_HOST")}:{int(os.getenv("DB_PORT"))}/"
-        f"{os.getenv("DB_NAME")}")
+def get_db_url() -> str:
+    return os.getenv("DB_URL")
