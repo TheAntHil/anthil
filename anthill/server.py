@@ -3,6 +3,7 @@ import logging
 from anthill.signal_handler import process_signal, convert
 from anthill.run_handler import filter_runs, sort_runs
 from datetime import datetime as dt
+from anthill.queries import insert_run
 
 
 logging.basicConfig(
@@ -25,6 +26,7 @@ def index():
         prepared_run = process_signal(run)
         logger.info(f"Processing result: {prepared_run}")
         runs.append(prepared_run)
+        insert_run(prepared_run)
         converted_run = convert(prepared_run)
         return jsonify(converted_run), 201
     except Exception as e:

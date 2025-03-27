@@ -1,21 +1,25 @@
 from sqlalchemy.dialects.postgresql import UUID
-from anhill.db import Base, engine
+from anthill.db import Base
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import String
 from datetime import datetime
 import uuid
 
 
-class Run(Base):
+class RunModel(Base):
     __tablename__ = 'runs'
     run_id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
-    job_id: Mapped[uuid.UUID]
-    status: Mapped[str]
-    created_at: Mapped[datetime]
-    updated_at: Mapped[datetime]
-    start_time: Mapped[datetime]
+    job_id: Mapped[uuid.UUID] = mapped_column(UUID)
+    status: Mapped[str] = mapped_column(String)
+    created_at: Mapped[datetime] = mapped_column()
+    updated_at: Mapped[datetime] = mapped_column()
+    start_time: Mapped[datetime] = mapped_column()
 
-    # def __repr__(self):
-    #     return f'<Run {self.run_id} {self.job_id} {self.status} {created_at}>'
-
-# if __name__ == "__main__":
-#     Base.metadata.create_all(bind=engine)
+    def __repr__(self):
+        return (f'<RunModel\n'
+                f'{self.run_id}\n'
+                f'{self.job_id}\n'
+                f'{self.status}\n'
+                f'{self.created_at}\n'
+                f'{self.updated_at}\n'
+                f'{self.start_time}>')
