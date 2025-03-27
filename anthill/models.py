@@ -1,7 +1,7 @@
 from sqlalchemy.dialects.postgresql import UUID
 from anthill.db import Base
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import Integer, String
+from sqlalchemy import String
 from datetime import datetime
 import uuid
 
