@@ -1,7 +1,7 @@
 from .server import app
 from .config import create_server_config
 from .db import create_tables
-from .models import Run
+from .models import RunModel
 
 
 def main():
