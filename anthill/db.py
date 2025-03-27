@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
-from .config import get_db_url
+from anthill.config import get_db_url
 
 
 engine = create_engine(get_db_url())
@@ -14,6 +14,6 @@ def create_tables():
 def get_session():
     return db_session()
 
-    
+
 class Base(DeclarativeBase):
     pass

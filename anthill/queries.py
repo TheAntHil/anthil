@@ -1,6 +1,6 @@
-from .models import RunModel
-from .db import db_session, get_session
-from .signal_handler import Run
+from anthill.models import RunModel
+from anthill.db import get_session
+from anthill.signal_handler import Run
 import logging
 
 

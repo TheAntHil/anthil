@@ -1,5 +1,5 @@
 from datetime import datetime as dt
-from .signal_handler import Run
+from anthill.signal_handler import Run
 
 
 def filter_runs(runs: list[Run], after: dt) -> list[Run]:

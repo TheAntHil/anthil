@@ -1,7 +1,7 @@
-from .server import app
-from .config import create_server_config
-from .db import create_tables
-from .models import RunModel
+from anthill.server import app
+from anthill.config import create_server_config
+from anthill.db import create_tables
+from anthill.models import RunModel
 
 
 def main():
