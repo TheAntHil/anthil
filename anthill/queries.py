@@ -30,7 +30,7 @@ def insert_run(prepared_run: Run) -> None:
         session.close()
 
 
-def get_runs_by_db(after, sort) -> None:
+def get_runs_by_db(after: dt, sort: str) -> list[Run]:
     session = get_session()
     query = select(RunModel).where(RunModel.updated_at > after)
     sort_field = getattr(RunModel, sort)
