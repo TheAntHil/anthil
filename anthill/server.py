@@ -3,7 +3,7 @@ import logging
 from anthill.signal_handler import process_signal, convert
 from anthill.run_handler import filter_runs, sort_runs
 from datetime import datetime as dt
-from anthill.queries import insert_run
+from anthill.queries import insert_run, get_runs_by_db
 
 
 logging.basicConfig(
@@ -40,11 +40,10 @@ def get_runs():
     sort = request.args.get("orderby")
     logger.info(f"Received request, parameters: after={after}, sort={sort}")
     try:
-        filtered_run = filter_runs(runs, after)
-        sorted_result = sort_runs(filtered_run, sort)
-        converted_runs = [convert(run) for run in sorted_result]
-        logger.info(f"Filtered and sorted runs: {converted_runs}")
-        return jsonify(converted_runs), 200
+        db_runs = get_runs_by_db(after, sort)
+        converted_runs = [convert(run) for run in db_runs]
+        logger.info(f"Filtered and sorted fetched {len(converted_runs)} runs.")
+        return jsonify(converted_runs)
     except Exception as e:
-        logger.error(f"An error occurred: {str(e)}")
+        logger.error(f"Error processing request: {e}")
         return jsonify({"error": str(e)}), 500
