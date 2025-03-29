@@ -5,7 +5,16 @@ meta {
 }
 
 post {
-  url: /api/v1/admin/systems/
-  body: none
+  url: http://localhost:8085/api/v1/admin/systems/
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "code":"SPB_AF",
+    "url":"airflow.k8s.ru",
+    "token":"askfjigwo3f322fsfs",
+    "system_type":"airflow"
+  }
 }

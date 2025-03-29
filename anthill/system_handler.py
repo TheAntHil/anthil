@@ -1,3 +1,4 @@
+from __future__ import annotations
 import uuid
 from typing import Any
 from anthill import models, schemas

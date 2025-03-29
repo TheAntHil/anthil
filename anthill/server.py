@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from datetime import datetime
 import logging
 from anthill import run_handler, queries, system_handler
+from anthill.job_handler import Job
+from anthill.queries import insert_job
 
 
 logging.basicConfig(
@@ -53,6 +55,21 @@ def create_system():
         logger.info(f"Processing result: {prepared_system}")
         answer = queries.insert_system(prepared_system)
         answer_json = system_handler.convert_to_dict(answer)
+        return jsonify(answer_json), 201
+    except Exception as e:
+        logger.error(f"Error processing request: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/v1/admin/jobs/', methods=['POST'])
+def create_job():
+    job_json = request.get_json()
+    logger.info(f"Received data: {job_json}")
+    try:
+        prepared_job = Job.from_dict(job_json)
+        logger.info(f"Processing result: {prepared_job}")
+        answer = insert_job(prepared_job)
+        answer_json = Job.to_dict(answer)
         return jsonify(answer_json), 201
     except Exception as e:
         logger.error(f"Error processing request: {e}")

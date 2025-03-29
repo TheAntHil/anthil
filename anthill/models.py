@@ -1,7 +1,7 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String
 from datetime import datetime, UTC
+from sqlalchemy import String, ForeignKey
 import uuid
 from anthill.db import Base
 
@@ -45,5 +45,29 @@ class System(Base):
                 f'url={self.url}\n'
                 f'token={self.token}\n'
                 f'system_type={self.system_type}\n'
+                f'created_at={self.created_at}\n'
+                f'updated_at={self.updated_at}>')
+
+
+class JobModel(Base):
+    __tablename__ = 'jobs'
+
+    job_id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
+    system_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("systems.system_id"), nullable=False)
+    code: Mapped[str] = mapped_column(String(50), nullable=False)
+    scheduler: Mapped[str] = mapped_column(String(255), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
+    )
+
+    def __repr__(self):
+        return (f'<Job\n'
+                f'job_id={self.job_id}\n'
+                f'system_id={self.system_id}\n'
+                f'code={self.code}\n'
+                f'url={self.url}\n'
+                f'scheduler={self.scheduler}\n'
                 f'created_at={self.created_at}\n'
                 f'updated_at={self.updated_at}>')
