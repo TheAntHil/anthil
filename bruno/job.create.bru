@@ -1,0 +1,19 @@
+meta {
+  name: job.create
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:8085/api/v1/admin/jobs/
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "system_id":"301a24cb-d321-4105-bbab-bf587baf588d",
+    "code":"LOAD_SALES",
+    "scheduler":"0 0 * * *"
+  }
+}
