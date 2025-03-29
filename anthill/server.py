@@ -3,7 +3,7 @@ from datetime import datetime
 import logging
 from anthill import run_handler
 from anthill import queries
-from anthill.system_handler import convert_to_obj, convert_to_dict
+from anthill import system_handler
 
 
 logging.basicConfig(
@@ -52,10 +52,10 @@ def create_system():
     system_json = request.get_json()
     logger.info(f"Received data: {system_json}")
     try:
-        prepared_system = convert_to_obj(system_json)
+        prepared_system = system_handler.convert_to_obj(system_json)
         logger.info(f"Processing result: {prepared_system}")
         answer = queries.insert_system(prepared_system)
-        answer_json = convert_to_dict(answer)
+        answer_json = system_handler.convert_to_dict(answer)
         return jsonify(answer_json), 201
     except Exception as e:
         logger.error(f"Error processing request: {e}")
