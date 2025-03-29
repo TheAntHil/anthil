@@ -1,4 +1,4 @@
-flask
+flask<3
 python-dotenv
 sqlalchemy==2.0.39
 psycopg2==2.9.10

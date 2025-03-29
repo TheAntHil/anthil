@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 import dataclasses as dc
 
 
@@ -9,8 +8,8 @@ class Run:
     job_id: str
     status: str
     start_time: datetime
-    created_at: Optional[datetime] = None
-    updated_at: Optional[datetime] = None
+    created_at: datetime | None
+    updated_at: datetime | None
 
 
 @dc.dataclass
@@ -20,8 +19,8 @@ class System:
     url: str
     token: str
     system_type: str
-    created_at: Optional[datetime] = None
-    updated_at: Optional[datetime] = None
+    created_at: datetime | None
+    updated_at: datetime | None
 
 
 @dc.dataclass
@@ -30,5 +29,5 @@ class Job:
     system_id: str
     code: str
     scheduler: str
-    created_at: Optional[datetime] = None
-    updated_at: Optional[datetime] = None
+    created_at: datetime | None
+    updated_at: datetime | None

@@ -3,7 +3,6 @@ from anthill.db import get_session
 import logging
 from sqlalchemy import select
 import datetime as dt
-import logging
 from anthill import models, db, schemas, system_handler, job_handler
 
 

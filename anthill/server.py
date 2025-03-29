@@ -6,7 +6,7 @@ from anthill import run_handler, queries, system_handler, job_handler
 
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
+    #format="%(asctime)s - %(levelname)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
     encoding="utf-8"
 )
@@ -55,7 +55,7 @@ def create_system():
         answer_json = system_handler.convert_to_dict(answer)
         return jsonify(answer_json), 201
     except Exception as e:
-        logger.error(f"Error processing request: {e}")
+        logger.exception("Error processing request")
         return jsonify({"error": str(e)}), 500
 
 
@@ -70,5 +70,5 @@ def create_job():
         answer_json = job_handler.to_dict(answer)
         return jsonify(answer_json), 201
     except Exception as e:
-        logger.error(f"Error processing request: {e}")
+        logger.exception(f"Error processing request")
         return jsonify({"error": str(e)}), 500

@@ -2,6 +2,7 @@ from __future__ import annotations
 import uuid
 from typing import Any
 from anthill import models, schemas
+from datetime import datetime, UTC
 
 
 def convert_to_obj(data: dict[str, Any]) -> schemas.System:
@@ -17,6 +18,8 @@ def convert_to_obj(data: dict[str, Any]) -> schemas.System:
         url=url,
         token=token,
         system_type=system_type,
+        created_at=datetime.now(tz=UTC),
+        updated_at=datetime.now(tz=UTC)
     )
 
 

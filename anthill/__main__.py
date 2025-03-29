@@ -6,7 +6,7 @@ from anthill.db import create_tables
 def main():
     create_tables()
     config = create_server_config()
-    app.run(host=config.host, port=config.port, debug=config.debug)
+    app.run(host=config.host, port=config.port)
 
 
 if __name__ == "__main__":

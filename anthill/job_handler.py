@@ -2,6 +2,7 @@ from __future__ import annotations
 import uuid
 from typing import Any
 from anthill import models, schemas
+from datetime import datetime, UTC
 
 
 def from_dict(data: dict[str, Any]) -> schemas.Job:
@@ -15,6 +16,8 @@ def from_dict(data: dict[str, Any]) -> schemas.Job:
         system_id=system_id,
         code=code,
         scheduler=scheduler,
+        created_at=datetime.now(tz=UTC),
+        updated_at=datetime.now(tz=UTC),
     )
 
 
