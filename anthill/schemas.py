@@ -22,3 +22,13 @@ class System:
     system_type: str
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
+
+
+@dc.dataclass
+class Job:
+    job_id: str
+    system_id: str
+    code: str
+    scheduler: str
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None

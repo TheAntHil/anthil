@@ -49,17 +49,17 @@ class System(Base):
                 f'updated_at={self.updated_at}>')
 
 
-class JobModel(Base):
+class Job(Base):
     __tablename__ = 'jobs'
 
     job_id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
     system_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("systems.system_id"), nullable=False)
     code: Mapped[str] = mapped_column(String(50), nullable=False)
     scheduler: Mapped[str] = mapped_column(String(255), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
     updated_at: Mapped[datetime] = mapped_column(
-        default=datetime.utcnow,
-        onupdate=datetime.utcnow
+        default=datetime.now(tz=UTC),
+        onupdate=datetime.now(tz=UTC)
     )
 
     def __repr__(self):

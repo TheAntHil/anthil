@@ -1,15 +1,10 @@
 from sqlalchemy.exc import SQLAlchemyError
-from anthill.job_handler import Job
-from anthill.models import SystemModel, JobModel
-from anthill.models import RunModel
 from anthill.db import get_session
-from anthill.signal_handler import Run
-from anthill.system_handler import System
 import logging
 from sqlalchemy import select
 import datetime as dt
 import logging
-from anthill import models, db, schemas, system_handler
+from anthill import models, db, schemas, system_handler, job_handler
 
 
 logger = logging.getLogger(__name__)
@@ -70,8 +65,8 @@ def insert_system(prepared_system: schemas.System) -> schemas.System:
         logger.error(f"QUERY Error: {e}")
 
 
-def insert_job(prepared_job: Job) -> Job:
-    job_model = JobModel(
+def insert_job(prepared_job: schemas.Job) -> schemas.Job:
+    job_model = models.Job(
         job_id=prepared_job.job_id,
         system_id=prepared_job.system_id,
         code=prepared_job.code,
@@ -82,6 +77,6 @@ def insert_job(prepared_job: Job) -> Job:
             session.add(job_model)
             session.commit()
             logger.info("QUERY record successfully inserted.")
-            return Job.to_dto(job_model)
+            return job_handler.to_dto(job_model)
     except SQLAlchemyError as e:
         logger.error(f"QUERY Error: {e}")

@@ -1,8 +1,7 @@
 from flask import Flask, request, jsonify
 from datetime import datetime
 import logging
-from anthill import run_handler, queries, system_handler
-from anthill.job_handler import Job
+from anthill import run_handler, queries, system_handler, job_handler
 from anthill.queries import insert_job
 
 
@@ -66,10 +65,10 @@ def create_job():
     job_json = request.get_json()
     logger.info(f"Received data: {job_json}")
     try:
-        prepared_job = Job.from_dict(job_json)
+        prepared_job = job_handler.from_dict(job_json)
         logger.info(f"Processing result: {prepared_job}")
         answer = insert_job(prepared_job)
-        answer_json = Job.to_dict(answer)
+        answer_json = job_handler.to_dict(answer)
         return jsonify(answer_json), 201
     except Exception as e:
         logger.error(f"Error processing request: {e}")
