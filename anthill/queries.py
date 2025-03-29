@@ -29,11 +29,10 @@ def insert_run(prepared_run: schemas.Run) -> None:
         session.close()
 
 
-def get_runs_by_db(after: dt, sort: str) -> list[schemas.Run]:
+def get_runs(after: dt) -> list[schemas.Run]:
     session = db.get_session()
     query = select(models.Run).where(models.Run.updated_at > after)
-    if sort == "updated_at":
-        query = query.order_by(models.Run.updated_at)
+    query = query.order_by(models.Run.updated_at)
     result = session.execute(query)
     runs = result.scalars().all()
     return [schemas.Run(

@@ -9,8 +9,8 @@ class Run:
     job_id: str
     status: str
     start_time: datetime
-    created_at: datetime
-    updated_at: datetime
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
 
 @dc.dataclass

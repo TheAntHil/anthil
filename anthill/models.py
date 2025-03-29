@@ -9,7 +9,7 @@ from anthill.db import Base
 class Run(Base):
     __tablename__ = 'runs'
     run_id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
-    job_id: Mapped[uuid.UUID] = mapped_column(UUID)
+    job_id: Mapped[uuid.UUID] = mapped_column(UUID, nullable=False)
     status: Mapped[str] = mapped_column(String(50), nullable=False)
     created_at: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
     updated_at: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
@@ -27,7 +27,6 @@ class Run(Base):
 
 class System(Base):
     __tablename__ = 'systems'
-
     system_id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
     code: Mapped[str] = mapped_column(String(50), nullable=False)
     url: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)

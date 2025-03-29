@@ -16,7 +16,7 @@ app = Flask(__name__)
 
 
 @app.route("/api/v1/srv/runs/", methods=["POST"])
-def index():
+def create_run():
     run = request.get_json()
     logger.info(f"Received data: {run}")
     try:
@@ -33,10 +33,9 @@ def index():
 @app.route("/api/v1/srv/runs/", methods=["GET"])
 def get_runs():
     after = datetime.fromisoformat(request.args.get("after").replace(" ", "+"))
-    sort = request.args.get("orderby")
-    logger.info(f"Received request, parameters: after={after}, sort={sort}")
+    logger.info(f"Received request, parameters: after={after}")
     try:
-        db_runs = queries.get_runs_by_db(after, sort)
+        db_runs = queries.get_runs(after)
         converted_runs = [run_handler.convert(run) for run in db_runs]
         logger.info(f"Filtered and sorted fetched {len(converted_runs)} runs.")
         return jsonify(converted_runs)
