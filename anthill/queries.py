@@ -1,17 +1,17 @@
 from sqlalchemy.exc import SQLAlchemyError
-from anthill import models
-from anthill.db import get_session
-from anthill.run_handler import Run
-from anthill.system_handler import System, convert_to_dto
-import logging
 from sqlalchemy import select
-from datetime import datetime as dt
+import datetime as dt
+import logging
+from anthill import models
+from anthill import db
+from anthill import run_handler
+from anthill.system_handler import System, convert_to_dto
 
 
 logger = logging.getLogger(__name__)
 
 
-def insert_run(prepared_run: Run) -> None:
+def insert_run(prepared_run: run_handler.Run) -> None:
     run_model = models.Run(
         run_id=prepared_run.run_id,
         job_id=prepared_run.job_id,
@@ -20,7 +20,7 @@ def insert_run(prepared_run: Run) -> None:
         created_at=prepared_run.created_at,
         updated_at=prepared_run.updated_at
     )
-    session = get_session()
+    session = db.get_session()
     try:
         session.add(run_model)
         session.commit()
@@ -32,14 +32,14 @@ def insert_run(prepared_run: Run) -> None:
         session.close()
 
 
-def get_runs_by_db(after: dt, sort: str) -> list[Run]:
-    session = get_session()
+def get_runs_by_db(after: dt, sort: str) -> list[run_handler.Run]:
+    session = db.get_session()
     query = select(models.Run).where(models.Run.updated_at > after)
     if sort == "updated_at":
         query = query.order_by(models.Run.updated_at)
     result = session.execute(query)
     runs = result.scalars().all()
-    return [Run(
+    return [run_handler.Run(
         run_id=run.run_id,
         job_id=run.job_id,
         status=run.status,
@@ -58,7 +58,7 @@ def insert_system(prepared_system: System) -> System:
         system_type=prepared_system.system_type
     )
     try:
-        with get_session() as session:
+        with db.get_session() as session:
             session.add(system_model)
             session.commit()
             print(system_model)
