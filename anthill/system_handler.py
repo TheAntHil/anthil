@@ -2,8 +2,7 @@ import uuid
 from datetime import datetime, UTC
 from typing import Any, Optional
 import dataclasses as dc
-
-from anthill.models import SystemModel
+from anthill import models
 
 
 @dc.dataclass
@@ -32,7 +31,8 @@ def convert_to_obj(data: dict[str, Any]) -> System:
         system_type=system_type,
     )
 
-def convert_to_dto(system_model: SystemModel) -> System:
+
+def convert_to_dto(system_model: models.System) -> System:
     return System(
         system_id=system_model.system_id,
         code=system_model.code,
@@ -42,6 +42,7 @@ def convert_to_dto(system_model: SystemModel) -> System:
         created_at=system_model.created_at,
         updated_at=system_model.updated_at
     )
+
 
 def convert_to_dict(system: System) -> dict[str, Any]:
     converted_system = {

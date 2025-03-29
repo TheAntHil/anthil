@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 import logging
-from anthill.signal_handler import process_signal, convert
-from anthill.run_handler import filter_runs, sort_runs
+from anthill.run_handler import process_run, convert
 from datetime import datetime as dt
 from anthill.queries import insert_run, get_runs_by_db, insert_system
 from anthill.system_handler import convert_to_obj, convert_to_dict
@@ -15,7 +14,6 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 app = Flask(__name__)
-runs = []
 
 
 @app.route("/api/v1/srv/runs/", methods=["POST"])
@@ -23,9 +21,8 @@ def index():
     run = request.get_json()
     logger.info(f"Received data: {run}")
     try:
-        prepared_run = process_signal(run)
+        prepared_run = process_run(run)
         logger.info(f"Processing result: {prepared_run}")
-        runs.append(prepared_run)
         insert_run(prepared_run)
         converted_run = convert(prepared_run)
         return jsonify(converted_run), 201
@@ -47,6 +44,7 @@ def get_runs():
     except Exception as e:
         logger.error(f"Error processing request: {e}")
         return jsonify({"error": str(e)}), 500
+
 
 @app.route('/api/v1/admin/systems/', methods=['POST'])
 def create_system():

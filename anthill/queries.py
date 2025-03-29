@@ -1,9 +1,7 @@
 from sqlalchemy.exc import SQLAlchemyError
-
-from anthill.models import SystemModel
-from anthill.models import RunModel
+from anthill import models
 from anthill.db import get_session
-from anthill.signal_handler import Run
+from anthill.run_handler import Run
 from anthill.system_handler import System, convert_to_dto
 import logging
 from sqlalchemy import select
@@ -14,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 def insert_run(prepared_run: Run) -> None:
-    run_model = RunModel(
+    run_model = models.Run(
         run_id=prepared_run.run_id,
         job_id=prepared_run.job_id,
         status=prepared_run.status,
@@ -26,7 +24,7 @@ def insert_run(prepared_run: Run) -> None:
     try:
         session.add(run_model)
         session.commit()
-        logger.info("QUERY  Record successfully inserted.")
+        logger.info("QUERY Record successfully inserted.")
     except Exception as e:
         session.rollback()
         logger.error(f"QUERY Error: {e}")
@@ -36,9 +34,9 @@ def insert_run(prepared_run: Run) -> None:
 
 def get_runs_by_db(after: dt, sort: str) -> list[Run]:
     session = get_session()
-    query = select(RunModel).where(RunModel.updated_at > after)
-    sort_field = getattr(RunModel, sort)
-    query = query.order_by(sort_field)
+    query = select(models.Run).where(models.Run.updated_at > after)
+    if sort == "updated_at":
+        query = query.order_by(models.Run.updated_at)
     result = session.execute(query)
     runs = result.scalars().all()
     return [Run(
@@ -52,7 +50,7 @@ def get_runs_by_db(after: dt, sort: str) -> list[Run]:
 
 
 def insert_system(prepared_system: System) -> System:
-    system_model = SystemModel(
+    system_model = models.System(
         system_id=prepared_system.system_id,
         code=prepared_system.code,
         url=prepared_system.url,

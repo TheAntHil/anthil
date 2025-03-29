@@ -6,7 +6,7 @@ from datetime import datetime
 import uuid
 
 
-class RunModel(Base):
+class Run(Base):
     __tablename__ = 'runs'
     run_id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
     job_id: Mapped[uuid.UUID] = mapped_column(UUID)
@@ -25,7 +25,7 @@ class RunModel(Base):
                 f'{self.start_time}>')
 
 
-class SystemModel(Base):
+class System(Base):
     __tablename__ = 'systems'
 
     system_id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
