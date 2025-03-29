@@ -1,21 +1,16 @@
 from sqlalchemy.exc import SQLAlchemyError
-
-from anthill.job_handler import Job
-from anthill.models import SystemModel, JobModel
-from anthill.models import RunModel
 from anthill.db import get_session
-from anthill.signal_handler import Run
-from anthill.system_handler import System
 import logging
 from sqlalchemy import select
-from datetime import datetime as dt
+import datetime as dt
+from anthill import models, db, schemas, system_handler, job_handler
 
 
 logger = logging.getLogger(__name__)
 
 
-def insert_run(prepared_run: Run) -> None:
-    run_model = RunModel(
+def insert_run(prepared_run: schemas.Run) -> None:
+    run_model = models.Run(
         run_id=prepared_run.run_id,
         job_id=prepared_run.job_id,
         status=prepared_run.status,
@@ -23,11 +18,11 @@ def insert_run(prepared_run: Run) -> None:
         created_at=prepared_run.created_at,
         updated_at=prepared_run.updated_at
     )
-    session = get_session()
+    session = db.get_session()
     try:
         session.add(run_model)
         session.commit()
-        logger.info("QUERY  Record successfully inserted.")
+        logger.info("QUERY Record successfully inserted.")
     except Exception as e:
         session.rollback()
         logger.error(f"QUERY Error: {e}")
@@ -35,14 +30,13 @@ def insert_run(prepared_run: Run) -> None:
         session.close()
 
 
-def get_runs_by_db(after: dt, sort: str) -> list[Run]:
-    session = get_session()
-    query = select(RunModel).where(RunModel.updated_at > after)
-    sort_field = getattr(RunModel, sort)
-    query = query.order_by(sort_field)
+def get_runs(after: dt) -> list[schemas.Run]:
+    session = db.get_session()
+    query = select(models.Run).where(models.Run.updated_at > after)
+    query = query.order_by(models.Run.updated_at)
     result = session.execute(query)
     runs = result.scalars().all()
-    return [Run(
+    return [schemas.Run(
         run_id=run.run_id,
         job_id=run.job_id,
         status=run.status,
@@ -52,8 +46,8 @@ def get_runs_by_db(after: dt, sort: str) -> list[Run]:
     ) for run in runs]
 
 
-def insert_system(prepared_system: System) -> System:
-    system_model = SystemModel(
+def insert_system(prepared_system: schemas.System) -> schemas.System:
+    system_model = models.System(
         system_id=prepared_system.system_id,
         code=prepared_system.code,
         url=prepared_system.url,
@@ -61,16 +55,17 @@ def insert_system(prepared_system: System) -> System:
         system_type=prepared_system.system_type
     )
     try:
-        with get_session() as session:
+        with db.get_session() as session:
             session.add(system_model)
             session.commit()
             logger.info("QUERY record successfully inserted.")
-            return System.to_dto(system_model)
+            return system_handler.convert_to_dto(system_model)
     except SQLAlchemyError as e:
         logger.error(f"QUERY Error: {e}")
 
-def insert_job(prepared_job: Job) -> Job:
-    job_model = JobModel(
+
+def insert_job(prepared_job: schemas.Job) -> schemas.Job:
+    job_model = models.Job(
         job_id=prepared_job.job_id,
         system_id=prepared_job.system_id,
         code=prepared_job.code,
@@ -81,6 +76,6 @@ def insert_job(prepared_job: Job) -> Job:
             session.add(job_model)
             session.commit()
             logger.info("QUERY record successfully inserted.")
-            return Job.to_dto(job_model)
+            return job_handler.to_dto(job_model)
     except SQLAlchemyError as e:
         logger.error(f"QUERY Error: {e}")
