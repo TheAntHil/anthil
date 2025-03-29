@@ -1,10 +1,11 @@
 from sqlalchemy.exc import SQLAlchemyError
 
-from anthill.models import SystemModel
+from anthill.job_handler import Job
+from anthill.models import SystemModel, JobModel
 from anthill.models import RunModel
 from anthill.db import get_session
 from anthill.signal_handler import Run
-from anthill.system_handler import System, convert_to_dto
+from anthill.system_handler import System
 import logging
 from sqlalchemy import select
 from datetime import datetime as dt
@@ -63,8 +64,23 @@ def insert_system(prepared_system: System) -> System:
         with get_session() as session:
             session.add(system_model)
             session.commit()
-            print(system_model)
             logger.info("QUERY record successfully inserted.")
-            return convert_to_dto(system_model)
+            return System.to_dto(system_model)
+    except SQLAlchemyError as e:
+        logger.error(f"QUERY Error: {e}")
+
+def insert_job(prepared_job: Job) -> Job:
+    job_model = JobModel(
+        job_id=prepared_job.job_id,
+        system_id=prepared_job.system_id,
+        code=prepared_job.code,
+        scheduler=prepared_job.scheduler
+    )
+    try:
+        with get_session() as session:
+            session.add(job_model)
+            session.commit()
+            logger.info("QUERY record successfully inserted.")
+            return Job.to_dto(job_model)
     except SQLAlchemyError as e:
         logger.error(f"QUERY Error: {e}")
