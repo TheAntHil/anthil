@@ -11,18 +11,18 @@ class Run(Base):
     run_id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
     job_id: Mapped[uuid.UUID] = mapped_column(UUID)
     status: Mapped[str] = mapped_column(String(50), nullable=False)
-    created_at: Mapped[datetime] = mapped_column()
-    updated_at: Mapped[datetime] = mapped_column()
-    start_time: Mapped[datetime] = mapped_column()
+    created_at: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
+    updated_at: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
+    start_time: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
 
     def __repr__(self):
         return (f'<RunModel\n'
-                f'{self.run_id}\n'
-                f'{self.job_id}\n'
-                f'{self.status}\n'
-                f'{self.created_at}\n'
-                f'{self.updated_at}\n'
-                f'{self.start_time}>')
+                f'run_id={self.run_id}\n'
+                f'job_id={self.job_id}\n'
+                f'status={self.status}\n'
+                f'created_at={self.created_at}\n'
+                f'updated_at={self.updated_at}\n'
+                f'start_time={self.start_time}>')
 
 
 class System(Base):

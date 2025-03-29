@@ -1,20 +1,10 @@
 import uuid
 from datetime import datetime, UTC
 from typing import Any
-import dataclasses as dc
+from anthill import schemas
 
 
-@dc.dataclass
-class Run:
-    run_id: str
-    job_id: str
-    status: str
-    start_time: datetime
-    created_at: datetime
-    updated_at: datetime
-
-
-def process_run(data: dict[str, Any]) -> Run:
+def process_run(data: dict[str, Any]) -> schemas.Run:
     status = data["status"]
     start_time = datetime.fromisoformat(data["start_time"])
     run_id = str(uuid.uuid4())
@@ -22,7 +12,7 @@ def process_run(data: dict[str, Any]) -> Run:
     created_at = datetime.now(tz=UTC)
     updated_at = datetime.now(tz=UTC)
 
-    return Run(
+    return schemas.Run(
         run_id=run_id,
         job_id=job_id,
         status=status,
@@ -31,7 +21,7 @@ def process_run(data: dict[str, Any]) -> Run:
         updated_at=updated_at)
 
 
-def convert(run: Run) -> dict[str, Any]:
+def convert(run: schemas.Run) -> dict[str, Any]:
     converted_run = {
         "run_id": run.run_id,
         "job_id": run.job_id,

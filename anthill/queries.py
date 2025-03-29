@@ -2,16 +2,13 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import select
 import datetime as dt
 import logging
-from anthill import models
-from anthill import db
-from anthill import run_handler
-from anthill.system_handler import System, convert_to_dto
+from anthill import models, db, schemas, system_handler
 
 
 logger = logging.getLogger(__name__)
 
 
-def insert_run(prepared_run: run_handler.Run) -> None:
+def insert_run(prepared_run: schemas.Run) -> None:
     run_model = models.Run(
         run_id=prepared_run.run_id,
         job_id=prepared_run.job_id,
@@ -32,14 +29,14 @@ def insert_run(prepared_run: run_handler.Run) -> None:
         session.close()
 
 
-def get_runs_by_db(after: dt, sort: str) -> list[run_handler.Run]:
+def get_runs_by_db(after: dt, sort: str) -> list[schemas.Run]:
     session = db.get_session()
     query = select(models.Run).where(models.Run.updated_at > after)
     if sort == "updated_at":
         query = query.order_by(models.Run.updated_at)
     result = session.execute(query)
     runs = result.scalars().all()
-    return [run_handler.Run(
+    return [schemas.Run(
         run_id=run.run_id,
         job_id=run.job_id,
         status=run.status,
@@ -49,7 +46,7 @@ def get_runs_by_db(after: dt, sort: str) -> list[run_handler.Run]:
     ) for run in runs]
 
 
-def insert_system(prepared_system: System) -> System:
+def insert_system(prepared_system: schemas.System) -> schemas.System:
     system_model = models.System(
         system_id=prepared_system.system_id,
         code=prepared_system.code,
@@ -63,6 +60,6 @@ def insert_system(prepared_system: System) -> System:
             session.commit()
             print(system_model)
             logger.info("QUERY record successfully inserted.")
-            return convert_to_dto(system_model)
+            return system_handler.convert_to_dto(system_model)
     except SQLAlchemyError as e:
         logger.error(f"QUERY Error: {e}")

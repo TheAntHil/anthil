@@ -1,9 +1,7 @@
 from flask import Flask, request, jsonify
 from datetime import datetime
 import logging
-from anthill import run_handler
-from anthill import queries
-from anthill import system_handler
+from anthill import run_handler, queries, system_handler
 
 
 logging.basicConfig(

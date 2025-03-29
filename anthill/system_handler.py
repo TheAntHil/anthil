@@ -1,29 +1,16 @@
 import uuid
-from datetime import datetime, UTC
-from typing import Any, Optional
-import dataclasses as dc
-from anthill import models
+from typing import Any
+from anthill import models, schemas
 
 
-@dc.dataclass
-class System:
-    system_id: str
-    code: str
-    url: str
-    token: str
-    system_type: str
-    created_at: Optional[datetime] = None
-    updated_at: Optional[datetime] = None
-
-
-def convert_to_obj(data: dict[str, Any]) -> System:
+def convert_to_obj(data: dict[str, Any]) -> schemas.System:
     code = data["code"]
     url = data["url"]
     token = data["token"]
     system_type = data["system_type"]
     system_id = str(uuid.uuid4())
 
-    return System(
+    return schemas.System(
         system_id=system_id,
         code=code,
         url=url,
@@ -32,8 +19,8 @@ def convert_to_obj(data: dict[str, Any]) -> System:
     )
 
 
-def convert_to_dto(system_model: models.System) -> System:
-    return System(
+def convert_to_dto(system_model: models.System) -> schemas.System:
+    return schemas.System(
         system_id=system_model.system_id,
         code=system_model.code,
         url=system_model.url,
@@ -44,7 +31,7 @@ def convert_to_dto(system_model: models.System) -> System:
     )
 
 
-def convert_to_dict(system: System) -> dict[str, Any]:
+def convert_to_dict(system: schemas.System) -> dict[str, Any]:
     converted_system = {
         "system_id": system.system_id,
         "code": system.code,
