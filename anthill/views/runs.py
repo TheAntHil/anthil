@@ -34,3 +34,4 @@ def get_runs():
     except Exception as e:
         logger.exception("Error processing request")
         return jsonify({"error": str(e)}), 500
+    
