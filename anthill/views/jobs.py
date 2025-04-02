@@ -2,11 +2,11 @@ from flask import Blueprint, request, jsonify
 import logging
 from anthill import job_handler, queries
 
-jobs = Blueprint('jobs', __name__, url_prefix='/api/v1/admin/jobs')
+view = Blueprint('jobs', __name__, url_prefix='/api/v1/admin/jobs')
 logger = logging.getLogger(__name__)
 
 
-@jobs.route('/', methods=['POST'])
+@view.route('/', methods=['POST'])
 def create_job():
     job_json = request.get_json()
     logger.info(f"Received data: {job_json}")

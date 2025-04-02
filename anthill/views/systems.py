@@ -2,11 +2,11 @@ from flask import Blueprint, request, jsonify
 import logging
 from anthill import system_handler, queries
 
-systems = Blueprint('systems', __name__, url_prefix='/api/v1/admin/systems')
+view = Blueprint('systems', __name__, url_prefix='/api/v1/admin/systems')
 logger = logging.getLogger(__name__)
 
 
-@systems.route('/', methods=['POST'])
+@view.route('/', methods=['POST'])
 def create_system():
     system_json = request.get_json()
     logger.info(f"Received data: {system_json}")

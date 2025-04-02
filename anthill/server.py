@@ -1,8 +1,6 @@
 from flask import Flask
 import logging
-from anthill.views.runs import runs
-from anthill.views.jobs import jobs
-from anthill.views.system import systems
+from anthill.views import runs, jobs, systems
 
 
 logging.basicConfig(
@@ -15,8 +13,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
-app.register_blueprint(runs)
-
-app.register_blueprint(jobs)
-
-app.register_blueprint(systems)
+app.register_blueprint(runs.view)
+app.register_blueprint(jobs.view)
+app.register_blueprint(systems.view)
