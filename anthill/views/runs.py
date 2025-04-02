@@ -3,11 +3,11 @@ from datetime import datetime
 import logging
 from anthill import run_handler, queries
 
-runs_blueprint = Blueprint('runs', __name__)
+runs = Blueprint('runs', __name__, url_prefix='/api/v1/srv/runs')
 logger = logging.getLogger(__name__)
 
 
-@runs_blueprint.route("/api/v1/srv/runs/", methods=["POST"])
+@runs.route("/", methods=["POST"])
 def create_run():
     run = request.get_json()
     logger.info(f"Received data: {run}")
@@ -22,7 +22,7 @@ def create_run():
         return jsonify({"error": str(e)}), 500
 
 
-@runs_blueprint.route("/api/v1/srv/runs/", methods=["GET"])
+@runs.route("/", methods=["GET"])
 def get_runs():
     after = datetime.fromisoformat(request.args.get("after").replace(" ", "+"))
     logger.info(f"Received request, parameters: after={after}")
