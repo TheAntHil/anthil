@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 import logging
 from sqlalchemy import select
-import datetime as dt
+from datetime import datetime
 from anthill import models
 
 logger = logging.getLogger(__name__)
@@ -11,8 +11,9 @@ class RunRepo:
     def __init__(self) -> None:
         pass
 
-    def insert(self, session: Session, run_id: str, job_id: str, status: str,
-               start_time: dt, created_at: dt, updated_at: dt) -> models.Run:
+    def add(self, session: Session, run_id: str, job_id: str, status: str,
+            start_time: datetime, created_at: datetime,
+            updated_at: datetime) -> models.Run:
         run_model = models.Run(
             run_id=run_id,
             job_id=job_id,
@@ -30,7 +31,7 @@ class RunRepo:
             logger.error(f"QUERY Error: {e}")
         return run_model
 
-    def get(self, session: Session, after: dt) -> list[models.Run]:
+    def get_updates(self, session: Session, after: datetime) -> list[models.Run]:
         query = select(models.Run).where(models.Run.updated_at > after)
         query = query.order_by(models.Run.updated_at)
         result = session.execute(query)

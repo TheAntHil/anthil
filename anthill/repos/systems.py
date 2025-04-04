@@ -11,8 +11,8 @@ class SystemRepo:
     def __init__(self) -> None:
         pass
 
-    def insert(self, session: Session, system_id: str, code: str,
-               url: str, token: str, system_type: str) -> models.System:
+    def add(self, session: Session, system_id: str, code: str,
+            url: str, token: str, system_type: str) -> models.System:
         system_model = models.System(
                     system_id=system_id,
                     code=code,

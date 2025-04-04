@@ -17,13 +17,13 @@ def create_run():
         logger.info(f"Processing result: {prepared_run}")
         with db.get_session() as session:
             run_repo = runs.RunRepo()
-            run_repo.insert(session,
-                            prepared_run.run_id,
-                            prepared_run.job_id,
-                            prepared_run.status,
-                            prepared_run.start_time,
-                            prepared_run.created_at,
-                            prepared_run.updated_at)
+            run_repo.add(session,
+                         prepared_run.run_id,
+                         prepared_run.job_id,
+                         prepared_run.status,
+                         prepared_run.start_time,
+                         prepared_run.created_at,
+                         prepared_run.updated_at)
         converted_run = run_handler.convert(prepared_run)
         return jsonify(converted_run), 201
     except Exception as e:
@@ -38,7 +38,7 @@ def get_runs():
     try:
         with db.get_session() as session:
             run_repo = runs.RunRepo()
-            db_runs = run_repo.get(session, after)
+            db_runs = run_repo.get_updates(session, after)
             converted_runs = [run_handler.convert(run) for run in db_runs]
             logger.info(f"Quantity in the sample {len(converted_runs)} runs.")
             return jsonify(converted_runs)
