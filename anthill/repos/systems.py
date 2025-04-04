@@ -9,9 +9,6 @@ logger = logging.getLogger(__name__)
 
 
 class SystemRepo:
-    def __init__(self) -> None:
-        pass
-
     def add(self, session: Session, system_id: str, code: str, url: str,
             token: str, system_type: str, created_at: datetime,
             updated_at: datetime) -> models.System:
