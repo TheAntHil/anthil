@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify
 from datetime import datetime
 import logging
-from anthill import run_handler, db
+from anthill import db
+from anthill.handler import run_handler
 from anthill.repos import runs
 
 view = Blueprint('runs', __name__, url_prefix='/api/v1/srv/runs')

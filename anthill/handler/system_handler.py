@@ -1,18 +1,19 @@
-from __future__ import annotations
 import uuid
 from typing import Any
-from anthill import models, schemas
 from datetime import datetime, UTC
 
+from anthill.models import System
+from anthill.schemas import SystemDTO
 
-def convert_to_obj(data: dict[str, Any]) -> schemas.System:
+
+def convert_to_obj(data: dict[str, Any]) -> System:
     code = data["code"]
     url = data["url"]
     token = data["token"]
     system_type = data["system_type"]
     system_id = str(uuid.uuid4())
 
-    return schemas.System(
+    return System(
         system_id=system_id,
         code=code,
         url=url,
@@ -23,8 +24,8 @@ def convert_to_obj(data: dict[str, Any]) -> schemas.System:
     )
 
 
-def convert_to_dto(system_model: models.System) -> schemas.System:
-    return schemas.System(
+def convert_to_dto(system_model: System) -> SystemDTO:
+    return SystemDTO(
         system_id=system_model.system_id,
         code=system_model.code,
         url=system_model.url,
@@ -35,7 +36,7 @@ def convert_to_dto(system_model: models.System) -> schemas.System:
     )
 
 
-def convert_to_dict(system: schemas.System) -> dict[str, Any]:
+def convert_to_dict(system: System) -> dict[str, Any]:
     converted_system = {
         "system_id": system.system_id,
         "code": system.code,

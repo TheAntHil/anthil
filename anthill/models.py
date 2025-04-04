@@ -72,3 +72,26 @@ class Job(Base):
                 f'scheduler={self.scheduler}\n'
                 f'created_at={self.created_at}\n'
                 f'updated_at={self.updated_at}>')
+
+class Dependence(Base):
+    __tablename__ = 'job_dependencies'
+
+    dependence_id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
+    child_code: Mapped[str] = mapped_column(String(50), nullable=False)
+    parent_code: Mapped[str] = mapped_column(String(255), nullable=False)
+    parent_scheduler: Mapped[str] = mapped_column(String(255), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
+    updated_at: Mapped[datetime] = mapped_column(
+        default=datetime.now(tz=UTC),
+        onupdate=datetime.now(tz=UTC)
+    )
+
+    def __repr__(self):
+        return (f'<Dependence\n'
+                f'dependence_id={self.dependence_id}\n'
+                f'child_code={self.child_code}\n'
+                f'parent_code={self.parent_code}\n'
+                f'parent_scheduler={self.parent_scheduler}\n'
+                f'created_at={self.created_at}\n'
+                f'updated_at={self.updated_at}')
+

@@ -1,17 +1,18 @@
-from __future__ import annotations
 import uuid
 from typing import Any
-from anthill import models, schemas
 from datetime import datetime, UTC
 
+from anthill.models import Job
+from anthill.schemas import JobDTO
 
-def from_dict(data: dict[str, Any]) -> schemas.Job:
+
+def from_dict(data: dict[str, Any]) -> Job:
     system_id = data["system_id"]
     code = data["code"]
     scheduler = data["scheduler"]
     job_id = str(uuid.uuid4())
 
-    return schemas.Job(
+    return Job(
         job_id=job_id,
         system_id=system_id,
         code=code,
@@ -21,7 +22,7 @@ def from_dict(data: dict[str, Any]) -> schemas.Job:
     )
 
 
-def to_dict(job: schemas.Job) -> dict[str, Any]:
+def to_dict(job: Job) -> dict[str, Any]:
     converted_job = {
         "job_id": job.job_id,
         "system_id": job.system_id,
@@ -33,8 +34,8 @@ def to_dict(job: schemas.Job) -> dict[str, Any]:
     return converted_job
 
 
-def to_dto(job_model: models.Job) -> schemas.Job:
-    return schemas.Job(
+def to_dto(job_model: Job) -> JobDTO:
+    return JobDTO(
         job_id=job_model.job_id,
         system_id=job_model.system_id,
         code=job_model.code,

@@ -13,7 +13,7 @@ class Run:
 
 
 @dc.dataclass
-class System:
+class SystemDTO:
     system_id: str
     code: str
     url: str
@@ -24,10 +24,19 @@ class System:
 
 
 @dc.dataclass
-class Job:
+class JobDTO:
     job_id: str
     system_id: str
     code: str
     scheduler: str
+    created_at: datetime | None
+    updated_at: datetime | None
+
+@dc.dataclass
+class DependenceDTO:
+    dependence_id: str
+    child_code: str
+    parent_code: str
+    parent_scheduler: str
     created_at: datetime | None
     updated_at: datetime | None
