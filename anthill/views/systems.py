@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 import logging
-from anthill import system_handler, db
+from anthill import db
+from anthill.handler import system_handler
 from anthill.repos import systems
 
 view = Blueprint('systems', __name__, url_prefix='/api/v1/admin/systems')
