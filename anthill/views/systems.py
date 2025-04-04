@@ -16,13 +16,15 @@ def create_system():
         logger.info(f"Processing result: {prepared_system}") 
         with db.get_session() as session:
             system_repo = systems.SystemRepo()
-            answer = system_repo.add(session,
-                                     prepared_system.system_id,
-                                     prepared_system.code,
-                                     prepared_system.url,
-                                     prepared_system.token,
-                                     prepared_system.system_type)
-            answer_json = system_handler.convert_to_dict(answer)
+            system_repo.add(session,
+                            prepared_system.system_id,
+                            prepared_system.code,
+                            prepared_system.url,
+                            prepared_system.token,
+                            prepared_system.system_type,
+                            prepared_system.created_at,
+                            prepared_system.updated_at)
+            answer_json = system_handler.convert_to_dict(prepared_system)
             return jsonify(answer_json), 201
     except Exception as e:
         logger.exception("Error processing request")

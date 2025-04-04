@@ -31,7 +31,8 @@ class RunRepo:
             logger.error(f"QUERY Error: {e}")
         return run_model
 
-    def get_updates(self, session: Session, after: datetime) -> list[models.Run]:
+    def get_updates(self, session: Session,
+                    after: datetime) -> list[models.Run]:
         query = select(models.Run).where(models.Run.updated_at > after)
         query = query.order_by(models.Run.updated_at)
         result = session.execute(query)
