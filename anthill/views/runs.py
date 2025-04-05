@@ -16,7 +16,7 @@ def create_run():
     try:
         prepared_run = run_handler.process_run(run)
         logger.info(f"Processing result: {prepared_run}")
-        with db.get_session() as session:
+        with db.db_session() as session:
             run_repo = runs.RunRepo()
             run_repo.add(session,
                          prepared_run.run_id,
