@@ -9,11 +9,10 @@ logger = logging.getLogger(__name__)
 
 
 class JobRepo:
-    def add(self, session: Session, job_id: str, system_id: str, code: str,
+    def add(self, session: Session, system_id: int, code: str,
             scheduler: str, created_at: datetime,
             updated_at: datetime) -> models.Job:
         job_model = models.Job(
-                    job_id=job_id,
                     system_id=system_id,
                     code=code,
                     scheduler=scheduler,

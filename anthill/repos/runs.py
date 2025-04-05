@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 class RunRepo:
-    def add(self, session: Session, run_id: str, job_id: str, status: str,
+    def add(self, session: Session, run_id: str, job_id: int, status: str,
             start_time: datetime, created_at: datetime,
             updated_at: datetime) -> models.Run:
         run_model = models.Run(

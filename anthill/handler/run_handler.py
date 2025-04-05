@@ -8,7 +8,7 @@ def process_run(data: dict[str, Any]) -> schemas.Run:
     status = data["status"]
     start_time = datetime.fromisoformat(data["start_time"])
     run_id = str(uuid.uuid4())
-    job_id = str(uuid.uuid4())
+    job_id = data["job_id"]
     created_at = datetime.now(tz=UTC)
     updated_at = datetime.now(tz=UTC)
 
