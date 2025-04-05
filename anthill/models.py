@@ -1,15 +1,16 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime, UTC
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import String, ForeignKey, Integer
 import uuid
 from anthill.db import Base
 
 
 class Run(Base):
     __tablename__ = 'runs'
+
     run_id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
-    job_id: Mapped[uuid.UUID] = mapped_column(UUID, nullable=False)
+    job_id: Mapped[int] = mapped_column(Integer, ForeignKey("jobs.job_id"))
     status: Mapped[str] = mapped_column(String(50), nullable=False)
     created_at: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
     updated_at: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
@@ -27,7 +28,8 @@ class Run(Base):
 
 class System(Base):
     __tablename__ = 'systems'
-    system_id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
+
+    system_id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     code: Mapped[str] = mapped_column(String(50), nullable=False)
     url: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
     token: Mapped[str] = mapped_column(String(255), nullable=False)
@@ -51,10 +53,10 @@ class System(Base):
 
 class Job(Base):
     __tablename__ = 'jobs'
-    job_id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
-    system_id: Mapped[uuid.UUID] = mapped_column(
-                                            ForeignKey("systems.system_id"),
-                                            nullable=False)
+    job_id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    system_id: Mapped[int] = mapped_column(Integer,
+                                           ForeignKey("systems.system_id"),
+                                           nullable=False)
     code: Mapped[str] = mapped_column(String(50), nullable=False)
     scheduler: Mapped[str] = mapped_column(String(255), nullable=False)
     created_at: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
@@ -76,10 +78,10 @@ class Job(Base):
 class Dependence(Base):
     __tablename__ = 'job_dependencies'
 
-    dependence_id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
-    child_code: Mapped[str] = mapped_column(String(50), nullable=False)
-    parent_code: Mapped[str] = mapped_column(String(255), nullable=False)
-    parent_scheduler: Mapped[str] = mapped_column(String(255), nullable=False)
+    dependence_id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    completed_job_id: Mapped[int] = mapped_column(Integer, ForeignKey("jobs.job_id"))
+    trigger_job_id: Mapped[int] = mapped_column(Integer, ForeignKey("jobs.job_id"))
+    # parent_scheduler: Mapped[str] = mapped_column(String(255), nullable=False)
     created_at: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
     updated_at: Mapped[datetime] = mapped_column(
         default=datetime.now(tz=UTC),
@@ -89,9 +91,8 @@ class Dependence(Base):
     def __repr__(self):
         return (f'<Dependence\n'
                 f'dependence_id={self.dependence_id}\n'
-                f'child_code={self.child_code}\n'
-                f'parent_code={self.parent_code}\n'
-                f'parent_scheduler={self.parent_scheduler}\n'
+                f'child_code={self.completed_job_id}\n'
+                f'parent_code={self.trigger_job_id}\n'
+                # f'parent_scheduler={self.parent_scheduler}\n'
                 f'created_at={self.created_at}\n'
                 f'updated_at={self.updated_at}')
-

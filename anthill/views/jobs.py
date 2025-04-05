@@ -18,7 +18,6 @@ def create_job():
         with db.get_session() as session:
             job_repo = jobs.JobRepo()
             job_repo.add(session,
-                         prepared_job.job_id,
                          prepared_job.system_id,
                          prepared_job.code,
                          prepared_job.scheduler,

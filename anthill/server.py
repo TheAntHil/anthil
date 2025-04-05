@@ -1,7 +1,6 @@
 from flask import Flask
 import logging
-from anthill.views import runs, jobs, systems
-
+from anthill.views import runs, jobs, systems, dependence
 
 logging.basicConfig(
     level=logging.INFO,
@@ -16,3 +15,4 @@ app = Flask(__name__)
 app.register_blueprint(runs.view)
 app.register_blueprint(jobs.view)
 app.register_blueprint(systems.view)
+app.register_blueprint(dependence.view)

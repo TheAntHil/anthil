@@ -1,47 +1,41 @@
-import uuid
-from typing import Any
 from datetime import datetime, UTC
+from typing import Any
 
-from anthill.models import Dependence
-from anthill.schemas import DependenceDTO
+from anthill import models, schemas
 
 
-def from_dict(data: dict[str, Any]) -> Dependence:
+def from_dict(data: dict[str, Any]) -> schemas.Dependence:
 
-    child_code = data["child_code"]
-    parent_code = data["parent_code"]
-    parent_scheduler = data["parent_scheduler"]
-    dependence_id = uuid.uuid4()
+    completed_job_id = data["completed_job_id"]
+    trigger_job_id = data["trigger_job_id"]
+    dependence_id = -1
 
-    return Dependence(
-        dependence_id=dependence_id,
-        child_code=child_code,
-        parent_code=parent_code,
-        parent_scheduler=parent_scheduler,
+    return schemas.Dependence(
+        dependence_id = dependence_id,
+        completed_job_id=completed_job_id,
+        trigger_job_id=trigger_job_id,
         created_at=datetime.now(tz=UTC),
         updated_at=datetime.now(tz=UTC),
     )
 
 
-def to_dict(dependence: Dependence) -> dict[str, Any]:
+def to_dict(dependence: schemas.Dependence) -> dict[str, Any]:
 
     converted_dependence = {
-        "dependence_id": str(dependence.dependence_id),
-        "child_code": dependence.child_code,
-        "parent_code": dependence.parent_code,
-        "parent_scheduler": dependence.parent_scheduler,
+        "dependence_id": dependence.dependence_id,
+        "completed_job_id": dependence.completed_job_id,
+        "trigger_job_id": dependence.trigger_job_id,
         "created_at": dependence.created_at.isoformat(),
         "updated_at": dependence.updated_at.isoformat(),
     }
     return converted_dependence
 
 
-def to_dto(dependence_model: Dependence) -> DependenceDTO:
-    return DependenceDTO(
-        dependence_id=str(dependence_model.dependence_id),
-        child_code=dependence_model.child_code,
-        parent_code=dependence_model.parent_code,
-        parent_scheduler=dependence_model.parent_scheduler,
+def to_dto(dependence_model: models.Dependence) -> schemas.Dependence:
+    return schemas.Dependence(
+        dependence_id=dependence_model.dependence_id,
+        completed_job_id=dependence_model.completed_job_id,
+        trigger_job_id=dependence_model.trigger_job_id,
         created_at=dependence_model.created_at,
         updated_at=dependence_model.updated_at,
     )

@@ -1,11 +1,12 @@
 from datetime import datetime
 import dataclasses as dc
+from typing import Optional
 
 
 @dc.dataclass
 class Run:
     run_id: str
-    job_id: str
+    job_id: int | None
     status: str
     start_time: datetime
     created_at: datetime | None
@@ -13,8 +14,8 @@ class Run:
 
 
 @dc.dataclass
-class SystemDTO:
-    system_id: str
+class System:
+    system_id: int
     code: str
     url: str
     token: str
@@ -24,19 +25,21 @@ class SystemDTO:
 
 
 @dc.dataclass
-class JobDTO:
-    job_id: str
-    system_id: str
+class Job:
+    job_id: int
+    system_id: int
     code: str
     scheduler: str
     created_at: datetime | None
     updated_at: datetime | None
 
+
+
 @dc.dataclass
-class DependenceDTO:
-    dependence_id: str
-    child_code: str
-    parent_code: str
-    parent_scheduler: str
+class Dependence:
+    dependence_id: int
+    completed_job_id: int
+    trigger_job_id: int
+    # parent_scheduler: str
     created_at: datetime | None
     updated_at: datetime | None
