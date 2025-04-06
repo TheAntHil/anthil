@@ -7,8 +7,9 @@ from anthill import models
 
 logger = logging.getLogger(__name__)
 
+
 class DependenceRepo:
-    def add(self, session: Session, completed_job_id: int, trigger_job_id: int,created_at: datetime,
+    def add(self, session: Session, completed_job_id: int, trigger_job_id: int, created_at: datetime,
             updated_at: datetime) -> models.Dependence:
 
         dependence_model = models.Dependence(

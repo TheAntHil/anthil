@@ -25,6 +25,7 @@ def create_job():
                 prepared_job.created_at,
                 prepared_job.updated_at,
             )
+            session.refresh(job)
         answer_json = job_handler.to_dict(job)
         return jsonify(answer_json), 201
     except Exception as e:

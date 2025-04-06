@@ -1,12 +1,11 @@
 from datetime import datetime
 import dataclasses as dc
-from typing import Optional
 
 
 @dc.dataclass
 class Run:
     run_id: str
-    job_id: int | None
+    job_id: int
     status: str
     start_time: datetime
     created_at: datetime | None
@@ -32,7 +31,6 @@ class Job:
     scheduler: str
     created_at: datetime | None
     updated_at: datetime | None
-
 
 
 @dc.dataclass
