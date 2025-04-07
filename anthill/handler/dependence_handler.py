@@ -11,7 +11,7 @@ def from_dict(data: dict[str, Any]) -> schemas.Dependence:
     dependence_id = -1
 
     return schemas.Dependence(
-        dependence_id = dependence_id,
+        dependence_id=dependence_id,
         completed_job_id=completed_job_id,
         trigger_job_id=trigger_job_id,
         created_at=datetime.now(tz=UTC),

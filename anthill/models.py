@@ -75,6 +75,7 @@ class Job(Base):
                 f'created_at={self.created_at}\n'
                 f'updated_at={self.updated_at}>')
 
+
 class Dependence(Base):
     __tablename__ = 'job_dependencies'
 

@@ -21,7 +21,7 @@ class RunRepo:
         )
         try:
             session.add(run_model)
-            session.commit() 
+            session.commit()
             logger.info("QUERY Record successfully inserted.")
         except Exception as e:
             session.rollback()

@@ -16,16 +16,17 @@ def create_run():
     try:
         prepared_run = run_handler.process_run(run)
         logger.info(f"Processing result: {prepared_run}")
-        with db.get_session() as session:
+        with db.db_session() as session:
             run_repo = runs.RunRepo()
-            run_repo.add(session,
-                         prepared_run.run_id,
-                         prepared_run.job_id,
-                         prepared_run.status,
-                         prepared_run.start_time,
-                         prepared_run.created_at,
-                         prepared_run.updated_at)
-        converted_run = run_handler.convert(prepared_run)
+            run = run_repo.add(session,
+                               prepared_run.run_id,
+                               prepared_run.job_id,
+                               prepared_run.status,
+                               prepared_run.start_time,
+                               prepared_run.created_at,
+                               prepared_run.updated_at)
+            session.refresh(run)
+        converted_run = run_handler.convert(run)
         return jsonify(converted_run), 201
     except Exception as e:
         logger.exception("Error processing request")
