@@ -38,7 +38,7 @@ def get_runs():
     after = datetime.fromisoformat(request.args.get("after").replace(" ", "+"))
     logger.info(f"Received request, parameters: after={after}")
     try:
-        with db.get_session() as session:
+        with db.db_session() as session:
             run_repo = runs.RunRepo()
             db_runs = run_repo.get_updates(session, after)
             converted_runs = [run_handler.convert(run) for run in db_runs]
