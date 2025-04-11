@@ -1,15 +1,14 @@
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime, UTC
 from sqlalchemy import String, ForeignKey
-import uuid
+from uuid import UUID
 from anthill.db import Base
 
 
 class Run(Base):
     __tablename__ = 'runs'
 
-    run_id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
+    run_id: Mapped[UUID] = mapped_column(primary_key=True)
     job_id: Mapped[int] = mapped_column(ForeignKey("jobs.job_id"))
     status: Mapped[str] = mapped_column(String(50), nullable=False)
     created_at: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
@@ -85,7 +84,7 @@ class Dependence(Base):
     completed_job_id: Mapped[int] = mapped_column(ForeignKey("jobs.job_id"))
     trigger_job_id: Mapped[int] = mapped_column(ForeignKey("jobs.job_id"))
     # parent_scheduler: Mapped[str] = mapped_column(String(255),
-    #                                              nullable=False)
+    #                                               nullable=False)
     created_at: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
     updated_at: Mapped[datetime] = mapped_column(
         default=datetime.now(tz=UTC),
