@@ -12,7 +12,7 @@ def from_dict(data: dict[str, Any]) -> schemas.System:
     system_id = -1
 
     return schemas.System(
-        system_id = system_id,
+        system_id=system_id,
         code=code,
         url=url,
         token=token,

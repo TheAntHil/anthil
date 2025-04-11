@@ -9,8 +9,8 @@ logger = logging.getLogger(__name__)
 
 
 class DependenceRepo:
-    def add(self, session: Session, completed_job_id: int, trigger_job_id: int, created_at: datetime,
-            updated_at: datetime) -> models.Dependence:
+    def add(self, session: Session, completed_job_id: int, trigger_job_id: int,
+            created_at: datetime, updated_at: datetime) -> models.Dependence:
 
         dependence_model = models.Dependence(
                     completed_job_id=completed_job_id,

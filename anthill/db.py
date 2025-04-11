@@ -11,9 +11,5 @@ def create_tables():
     Base.metadata.create_all(bind=engine)
 
 
-def get_session():
-    return db_session()
-
-
 class Base(DeclarativeBase):
     pass

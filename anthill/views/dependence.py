@@ -4,7 +4,8 @@ from anthill import db
 from anthill.handler import dependence_handler
 from anthill.repos import dependencies
 
-view = Blueprint('dependencies', __name__, url_prefix='/api/v1/admin/dependencies')
+view = Blueprint('dependencies', __name__,
+                 url_prefix='/api/v1/admin/dependencies')
 logger = logging.getLogger(__name__)
 
 
@@ -15,7 +16,7 @@ def create_dependence():
     try:
         prepared_dependence = dependence_handler.from_dict(dependence_json)
         logger.info(f"Processing result: {prepared_dependence}")
-        with db.get_session() as session:
+        with db.db_session() as session:
             job_repo = dependencies.DependenceRepo()
             dependence = job_repo.add(session,
                                       prepared_dependence.completed_job_id,
