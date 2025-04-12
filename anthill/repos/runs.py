@@ -1,8 +1,10 @@
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 import logging
 from sqlalchemy import select
 from datetime import datetime
 from anthill import models
+from typing import Sequence
 
 logger = logging.getLogger(__name__)
 
@@ -22,14 +24,16 @@ class RunRepo:
         try:
             session.add(run_model)
             session.commit()
+            session.refresh(run_model)
             logger.info("QUERY Record successfully inserted.")
-        except Exception as e:
+        except SQLAlchemyError:
             session.rollback()
-            logger.error(f"QUERY Error: {e}")
+            logger.exception("unhandled error")
+            raise
         return run_model
 
     def get_updates(self, session: Session,
-                    after: datetime) -> list[models.Run]:
+                    after: datetime) -> Sequence[models.Run]:
         query = select(models.Run).where(models.Run.updated_at > after)
         query = query.order_by(models.Run.updated_at)
         result = session.execute(query)

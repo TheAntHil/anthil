@@ -23,7 +23,6 @@ def create_dependence():
                                       prepared_dependence.trigger_job_id,
                                       prepared_dependence.created_at,
                                       prepared_dependence.updated_at)
-            session.refresh(dependence)
         answer_json = dependence_handler.to_dict(dependence)
         return jsonify(answer_json), 201
     except Exception as e:
