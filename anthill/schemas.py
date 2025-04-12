@@ -8,8 +8,8 @@ class Run:
     job_id: int
     status: str
     start_time: datetime
-    created_at: datetime | None
-    updated_at: datetime | None
+    created_at: datetime
+    updated_at: datetime
 
 
 @dc.dataclass
@@ -19,8 +19,8 @@ class System:
     url: str
     token: str
     system_type: str
-    created_at: datetime | None
-    updated_at: datetime | None
+    created_at: datetime
+    updated_at: datetime
 
 
 @dc.dataclass
@@ -29,8 +29,8 @@ class Job:
     system_id: int
     code: str
     scheduler: str
-    created_at: datetime | None
-    updated_at: datetime | None
+    created_at: datetime
+    updated_at: datetime
 
 
 @dc.dataclass
@@ -39,5 +39,5 @@ class Dependence:
     completed_job_id: int
     trigger_job_id: int
     # parent_scheduler: str
-    created_at: datetime | None
-    updated_at: datetime | None
+    created_at: datetime
+    updated_at: datetime

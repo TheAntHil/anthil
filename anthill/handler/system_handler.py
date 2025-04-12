@@ -1,6 +1,5 @@
 from datetime import datetime, UTC
 from typing import Any
-
 from anthill import models, schemas
 
 

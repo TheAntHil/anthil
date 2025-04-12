@@ -21,8 +21,10 @@ class DependenceRepo:
         try:
             session.add(dependence_model)
             session.commit()
+            session.refresh(dependence_model)
             logger.info("QUERY record successfully inserted.")
-        except SQLAlchemyError as e:
+        except SQLAlchemyError:
             session.rollback()
-            logger.error(f"QUERY Error: {e}")
+            logger.exception("unhandled error")
+            raise
         return dependence_model

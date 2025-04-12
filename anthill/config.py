@@ -15,10 +15,10 @@ class ServerConfig:
 
 def create_server_config() -> ServerConfig:
     return ServerConfig(
-        host=os.getenv("HOST"),
-        port=int(os.getenv("PORT")),
-        debug=bool(os.getenv("DEBUG")))
+        host=os.environ["HOST"],
+        port=int(os.environ["PORT"]),
+        debug=bool(os.environ["DEBUG"]))
 
 
 def get_db_url() -> str:
-    return os.getenv("DB_URL")
+    return os.environ["DB_URL"]

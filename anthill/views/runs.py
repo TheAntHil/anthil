@@ -25,7 +25,6 @@ def create_run():
                                prepared_run.start_time,
                                prepared_run.created_at,
                                prepared_run.updated_at)
-            session.refresh(run)
         converted_run = run_handler.convert(run)
         return jsonify(converted_run), 201
     except Exception as e:
