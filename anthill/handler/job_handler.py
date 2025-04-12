@@ -20,7 +20,7 @@ def from_dict(data: dict[str, Any]) -> schemas.Job:
     )
 
 
-def to_dict(job: schemas.Job) -> dict[str, Any]:
+def convert(job: models.Job) -> dict[str, Any]:
     converted_job = {
         "job_id": job.job_id,
         "system_id": job.system_id,
