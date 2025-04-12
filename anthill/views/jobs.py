@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, Response
 import logging
 from anthill import db
 from anthill.handler import job_handler
@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 @view.route('/', methods=['POST'])
-def create_job():
+def create_job() -> tuple[Response, int]:
     job_json = request.get_json()
     logger.info(f"Received data: {job_json}")
     try:
@@ -25,8 +25,13 @@ def create_job():
                 prepared_job.created_at,
                 prepared_job.updated_at,
             )
-        answer_json = job_handler.to_dict(job)
+        answer_json = job_handler.convert(job)
         return jsonify(answer_json), 201
     except Exception as e:
         logger.exception("Error processing request")
         return jsonify({"error": str(e)}), 500
+
+
+@view.get('/')
+def compute_jobs_to_schedule():
+    pass

@@ -1,0 +1,11 @@
+meta {
+  name: run.compute_job_to_schedule
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{endpoint}}/api/v1/srv/runs/{{run_id}}/schedule
+  body: none
+  auth: inherit
+}

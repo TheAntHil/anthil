@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime, UTC
 from typing import Any
-from anthill import schemas
+from anthill import schemas, models
 
 
 def process_run(data: dict[str, Any]) -> schemas.Run:
@@ -21,7 +21,7 @@ def process_run(data: dict[str, Any]) -> schemas.Run:
         updated_at=updated_at)
 
 
-def convert(run: schemas.Run) -> dict[str, Any]:
+def convert(run: models.Run) -> dict[str, Any]:
     converted_run = {
         "run_id": run.run_id,
         "job_id": run.job_id,
