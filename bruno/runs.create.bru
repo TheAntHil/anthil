@@ -12,9 +12,13 @@ post {
 
 body:json {
   { 
-    "job_id": 37,
+    "job_id": 7,
     "code": "super-puper-dag",
-    "status": "done",
+    "externol_status": "done",
     "start_time": "2025-03-24T14:50:00.000000+00:00"
   }
+}
+
+vars:post-response {
+  run_id: res.body.run_id
 }
