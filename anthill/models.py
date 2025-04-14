@@ -1,12 +1,12 @@
 from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime, UTC
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import String, ForeignKey, Enum
 from uuid import UUID
 from anthill.db import Base
-from enum import Enum
+from enum import Enum as PyEnum
 
 
-class RunStatus(Enum):
+class RunStatus(PyEnum):
     created = "created"
     scheduled = "scheduled"
     triggered = "triggered"
@@ -21,8 +21,10 @@ class Run(Base):
     created_at: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
     updated_at: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
     start_time: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
-    status: Mapped[str] = mapped_column(String(50), nullable=False,
-                                        default=RunStatus.created.value)
+    status: Mapped[RunStatus] = mapped_column(
+        Enum(RunStatus, name="run_status"),
+        nullable=False,
+        default=RunStatus.created)
 
     def __repr__(self):
         return (f'<RunModel\n'
