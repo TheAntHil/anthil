@@ -6,7 +6,7 @@ import dataclasses as dc
 class Run:
     run_id: str
     job_id: int
-    externol_status: str
+    external_status: str
     start_time: datetime
     created_at: datetime
     updated_at: datetime

@@ -5,7 +5,7 @@ from anthill import schemas, models
 
 
 def process_run(data: dict[str, Any]) -> schemas.Run:
-    externol_status = data["externol_status"]
+    external_status = data["external_status"]
     start_time = datetime.fromisoformat(data["start_time"])
     run_id = str(uuid.uuid4())
     job_id = data["job_id"]
@@ -15,7 +15,7 @@ def process_run(data: dict[str, Any]) -> schemas.Run:
     return schemas.Run(
         run_id=run_id,
         job_id=job_id,
-        externol_status=externol_status,
+        external_status=external_status,
         start_time=start_time,
         created_at=created_at,
         updated_at=updated_at)
@@ -25,7 +25,7 @@ def convert(run: models.Run) -> dict[str, Any]:
     converted_run = {
         "run_id": run.run_id,
         "job_id": run.job_id,
-        "externol_status": run.externol_status,
+        "external_status": run.external_status,
         "start_time": run.start_time.isoformat(),
         "created_at": run.created_at.isoformat(),
         "updated_at": run.updated_at.isoformat()

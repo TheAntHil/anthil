@@ -11,12 +11,12 @@ logger = logging.getLogger(__name__)
 
 class RunRepo:
     def add(self, session: Session, run_id: str, job_id: int,
-            externol_status: str, start_time: datetime, created_at: datetime,
+            external_status: str, start_time: datetime, created_at: datetime,
             updated_at: datetime) -> models.Run:
         run_model = models.Run(
             run_id=run_id,
             job_id=job_id,
-            externol_status=externol_status,
+            external_status=external_status,
             start_time=start_time,
             created_at=created_at,
             updated_at=updated_at
