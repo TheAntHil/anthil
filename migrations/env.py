@@ -4,7 +4,7 @@ from sqlalchemy import pool
 from alembic import context
 from anthill.config import get_db_url
 from anthill.db import Base
-from anthill.models import Run, System, Job, Dependence
+from anthill.models import *
 
 
 # this is the Alembic Config object, which provides
