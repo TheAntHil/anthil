@@ -3,6 +3,13 @@ from datetime import datetime, UTC
 from sqlalchemy import String, ForeignKey
 from uuid import UUID
 from anthill.db import Base
+from enum import Enum
+
+
+class RunStatus(Enum):
+    created = "created"
+    scheduled = "scheduled"
+    triggered = "triggered"
 
 
 class Run(Base):
@@ -14,6 +21,8 @@ class Run(Base):
     created_at: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
     updated_at: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
     start_time: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
+    status: Mapped[str] = mapped_column(String(50), nullable=False,
+                                        default=RunStatus.created.value)
 
     def __repr__(self):
         return (f'<RunModel\n'
@@ -22,7 +31,8 @@ class Run(Base):
                 f'external_status={self.external_status}\n'
                 f'created_at={self.created_at}\n'
                 f'updated_at={self.updated_at}\n'
-                f'start_time={self.start_time}>')
+                f'start_time={self.start_time}\n'
+                f'status={self.status}>')
 
 
 class System(Base):
@@ -98,4 +108,4 @@ class Dependence(Base):
                 f'parent_code={self.trigger_job_id}\n'
                 # f'parent_scheduler={self.parent_scheduler}\n'
                 f'created_at={self.created_at}\n'
-                f'updated_at={self.updated_at}')
+                f'updated_at={self.updated_at}>')
