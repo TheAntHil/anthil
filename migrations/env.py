@@ -3,7 +3,9 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
 from anthill.config import get_db_url
-from anthill.db import Base  # Импорт Base из anthill.db
+from anthill.db import Base
+from anthill.models import Run, System, Job, Dependence
+
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
