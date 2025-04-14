@@ -10,7 +10,7 @@ class Run(Base):
 
     run_id: Mapped[UUID] = mapped_column(primary_key=True)
     job_id: Mapped[int] = mapped_column(ForeignKey("jobs.job_id"))
-    status: Mapped[str] = mapped_column(String(50), nullable=False)
+    external_status: Mapped[str] = mapped_column(String(50), nullable=False)
     created_at: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
     updated_at: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
     start_time: Mapped[datetime] = mapped_column(default=datetime.now(tz=UTC))
@@ -19,7 +19,7 @@ class Run(Base):
         return (f'<RunModel\n'
                 f'run_id={self.run_id}\n'
                 f'job_id={self.job_id}\n'
-                f'status={self.status}\n'
+                f'external_status={self.external_status}\n'
                 f'created_at={self.created_at}\n'
                 f'updated_at={self.updated_at}\n'
                 f'start_time={self.start_time}>')

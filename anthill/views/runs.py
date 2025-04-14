@@ -22,7 +22,7 @@ def create_run():
             run = run_repo.add(session,
                                prepared_run.run_id,
                                prepared_run.job_id,
-                               prepared_run.status,
+                               prepared_run.external_status,
                                prepared_run.start_time,
                                prepared_run.created_at,
                                prepared_run.updated_at)
