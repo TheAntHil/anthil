@@ -2,7 +2,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 import logging
 from sqlalchemy import select
-from datetime import datetime
+from datetime import datetime, UTC
 from anthill import models
 from typing import Sequence
 
@@ -39,4 +39,9 @@ class RunRepo:
         query = query.order_by(models.Run.updated_at)
         result = session.execute(query)
         runs = result.scalars().all()
+        for run in runs:
+            if run.status != models.RunStatus.scheduled:
+                run.status = models.RunStatus.scheduled
+                run.updated_at = datetime.now(tz=UTC)
+        session.commit()
         return runs
