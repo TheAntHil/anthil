@@ -1,5 +1,6 @@
 from datetime import datetime
 import dataclasses as dc
+from anthill.models import RunStatus
 
 
 @dc.dataclass
@@ -10,6 +11,7 @@ class Run:
     start_time: datetime
     created_at: datetime
     updated_at: datetime
+    status: RunStatus
 
 
 @dc.dataclass

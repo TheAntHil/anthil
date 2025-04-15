@@ -25,7 +25,9 @@ def create_run():
                                prepared_run.external_status,
                                prepared_run.start_time,
                                prepared_run.created_at,
-                               prepared_run.updated_at)
+                               prepared_run.updated_at,
+                               prepared_run.status,
+                               )
         converted_run = run_handler.convert(run)
         return jsonify(converted_run), 201
     except Exception as e:
