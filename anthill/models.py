@@ -104,7 +104,7 @@ class Dependence(Base):
     )
     __table_args__ = (
         UniqueConstraint('completed_job_id', 'trigger_job_id',
-                         name='unique_index_job_dependence'),
+                         name='uq_completed_job_triggered_job_pair_idx'),
     )
 
     def __repr__(self):
