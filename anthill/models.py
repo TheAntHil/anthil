@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime, UTC
-from sqlalchemy import String, ForeignKey, Enum
+from sqlalchemy import String, ForeignKey, Enum, UniqueConstraint
 from uuid import UUID
 from anthill.db import Base
 from enum import Enum as PyEnum
@@ -101,6 +101,10 @@ class Dependence(Base):
     updated_at: Mapped[datetime] = mapped_column(
         default=datetime.now(tz=UTC),
         onupdate=datetime.now(tz=UTC)
+    )
+    __table_args__ = (
+        UniqueConstraint('completed_job_id', 'trigger_job_id',
+                         name='uq_completed_job_triggered_job_pair_idx'),
     )
 
     def __repr__(self):
