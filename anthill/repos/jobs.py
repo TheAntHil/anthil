@@ -1,7 +1,7 @@
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session, aliased
-from sqlalchemy import select
-from datetime import datetime, timedelta
+from sqlalchemy import select, update
+from datetime import datetime, timedelta, UTC
 import logging
 from anthill import models
 from typing import Sequence
@@ -32,7 +32,7 @@ class JobRepo:
             logger.exception("unhandled error")
             raise
         return job_model
-    
+
     def get_schedule_jobs_for_run(self, run_id: UUID,
                                   session: Session) -> Sequence[models.Job]:
         CompletedRun = aliased(models.Run)
@@ -51,7 +51,14 @@ class JobRepo:
         ).where(
             DependesRun.updated_at > datetime.now() - timedelta(days=1),
         )
-
         result = session.execute(query)
         jobs = result.scalars().all()
+        for job in jobs:
+            update_status_stmt = (update(models.Run)
+                                  .where(models.Run.job_id == job.job_id)
+                                  .values(
+                                         status=models.RunStatus.triggered,
+                                         updated_at=datetime.now(tz=UTC)))
+            session.execute(update_status_stmt)
+        session.commit()
         return jobs
