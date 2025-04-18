@@ -32,5 +32,5 @@ def to_dto(scheduled_model: models.Scheduled) -> schemas.Scheduled:
         scheduled_id=scheduled_model.scheduled_id,
         job_id=scheduled_model.job_id,
         scheduled_at=scheduled_model.scheduled_at,
-        status=scheduled_model.statusз,
+        status=scheduled_model.status,
         )
