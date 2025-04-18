@@ -17,6 +17,7 @@ class ScheduledStatus(PyEnum):
     triggered = "triggered"
     cancelled = "cancelled"
 
+
 class Run(Base):
     __tablename__ = 'runs'
 
