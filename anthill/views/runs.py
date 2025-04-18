@@ -19,7 +19,7 @@ def prepare(data: dict[str, Any]) -> schemas.Run:
     job_id = data["job_id"]
     created_at = datetime.now(tz=UTC)
     updated_at = datetime.now(tz=UTC)
-    status = models.RunStatus.created
+    status = models.RunStatus.CREATED
 
     return schemas.Run(
         run_id=run_id,

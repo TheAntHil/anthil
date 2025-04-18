@@ -30,7 +30,7 @@ class Run(Base):
     status: Mapped[RunStatus] = mapped_column(
         Enum(RunStatus, name="run_status"),
         nullable=False,
-        default=RunStatus.created)
+        default=RunStatus.CREATED)
 
     def __repr__(self):
         return (f'<RunModel\n'
@@ -136,7 +136,7 @@ class ScheduledTask(Base):
     status: Mapped[ScheduledStatus] = mapped_column(
         Enum(ScheduledStatus, name="scheduled_status"),
         nullable=False,
-        default=ScheduledStatus.scheduled)
+        default=ScheduledStatus.SCHEDULED)
 
     def __repr__(self):
         return (f'<Scheduled\n'
