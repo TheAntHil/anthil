@@ -32,7 +32,7 @@ class JobRepo:
             logger.exception("unhandled error")
             raise
         return job_model
-    
+
     def get_schedule_jobs_for_run(self, run_id: UUID,
                                   session: Session) -> Sequence[models.Job]:
         CompletedRun = aliased(models.Run)

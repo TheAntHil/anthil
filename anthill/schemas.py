@@ -43,3 +43,11 @@ class Dependence:
     # parent_scheduler: str
     created_at: datetime
     updated_at: datetime
+
+
+@dc.dataclass
+class Scheduled:
+    scheduled_id: int
+    job_id: int
+    scheduled_at: datetime
+    status: RunStatus

@@ -115,3 +115,25 @@ class Dependence(Base):
                 # f'parent_scheduler={self.parent_scheduler}\n'
                 f'created_at={self.created_at}\n'
                 f'updated_at={self.updated_at}>')
+
+
+class Scheduled(Base):
+    __tablename__ = 'scheduled_task'
+
+    scheduled_id: Mapped[int] = mapped_column(primary_key=True,
+                                              autoincrement=True)
+    job_id: Mapped[int] = mapped_column(ForeignKey("run.job_id"))
+    scheduled_at: Mapped[datetime] = mapped_column(
+        default=datetime.now(tz=UTC),
+        onupdate=datetime.now(tz=UTC)
+    )
+    status: Mapped[RunStatus] = mapped_column(
+        Enum(RunStatus, name="run_status"),
+        nullable=False)
+
+    def __repr__(self):
+        return (f'<Scheduled\n'
+                f'scheduled_id={self.scheduled_id}\n'
+                f'job_id={self.job_id}\n'
+                f'scheduled_at={self.scheduled_id}\n'
+                f'status={self.status}>')
