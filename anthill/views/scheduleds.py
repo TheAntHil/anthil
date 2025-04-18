@@ -14,7 +14,7 @@ def prepare(data: dict[str, Any]) -> schemas.Scheduled:
     scheduled_id = -1
     job_id = data["job_id"]
     scheduled_at = datetime.now(tz=UTC)
-    status = models.ScheduledStatus.scheduled
+    status = models.ScheduledStatus.SCHEDULED
 
     return schemas.Scheduled(
         scheduled_id=scheduled_id,
