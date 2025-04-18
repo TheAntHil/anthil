@@ -123,8 +123,8 @@ class Dependence(Base):
                 f'updated_at={self.updated_at}>')
 
 
-class Scheduled(Base):
-    __tablename__ = 'scheduled_task'
+class ScheduledTask(Base):
+    __tablename__ = 'scheduled_tasks'
 
     scheduled_id: Mapped[int] = mapped_column(primary_key=True,
                                               autoincrement=True)
