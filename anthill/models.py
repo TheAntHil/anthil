@@ -142,5 +142,5 @@ class Scheduled(Base):
         return (f'<Scheduled\n'
                 f'scheduled_id={self.scheduled_id}\n'
                 f'job_id={self.job_id}\n'
-                f'scheduled_at={self.scheduled_id}\n'
+                f'scheduled_at={self.scheduled_at}\n'
                 f'status={self.status}>')
