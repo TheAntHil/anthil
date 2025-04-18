@@ -15,7 +15,7 @@ class RunStatus(enum.Enum):
 class ScheduledStatus(enum.Enum):
     SCHEDULED = "scheduled"
     TRIGGERED = "triggered"
-    CANCELLED = "canceled"
+    CANCELLED = "cancelled"
 
 
 class Run(Base):
