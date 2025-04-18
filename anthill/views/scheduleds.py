@@ -24,7 +24,7 @@ def prepare(data: dict[str, Any]) -> schemas.Scheduled:
         )
 
 
-def convert(scheduled: models.Scheduled) -> dict[str, Any]:
+def convert(scheduled: models.ScheduledTask) -> dict[str, Any]:
     converted_scheduled = {
             "scheduled_id": scheduled.scheduled_id,
             "job_id": scheduled.job_id,
