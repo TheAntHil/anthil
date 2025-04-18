@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, Response
 import logging
 from anthill import db, schemas, models
 from anthill.repos import dependencies
@@ -39,7 +39,7 @@ def convert(dependence: models.Dependence) -> dict[str, Any]:
 
 
 @view.route('/', methods=['POST'])
-def create_dependence():
+def create_dependence() -> tuple[Response, int]:
     dependence_json = request.get_json()
     logger.info(f"Received data: {dependence_json}")
     try:
