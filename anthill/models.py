@@ -3,19 +3,19 @@ from datetime import datetime, UTC
 from sqlalchemy import String, ForeignKey, Enum, UniqueConstraint
 from uuid import UUID
 from anthill.db import Base
-from enum import Enum as PyEnum
+import enum
 
 
-class RunStatus(PyEnum):
-    created = "created"
-    scheduled = "scheduled"
-    triggered = "triggered"
+class RunStatus(enum.Enum):
+    CREATED = "created"
+    SCHEDULED = "scheduled"
+    TRIGGERED = "triggered"
 
 
-class ScheduledStatus(PyEnum):
-    scheduled = "scheduled"
-    triggered = "triggered"
-    cancelled = "cancelled"
+class ScheduledStatus(enum.Enum):
+    SCHEDULED = "scheduled"
+    TRIGGERED = "triggered"
+    CANCELLED = "cancelled"
 
 
 class Run(Base):
@@ -30,7 +30,7 @@ class Run(Base):
     status: Mapped[RunStatus] = mapped_column(
         Enum(RunStatus, name="run_status"),
         nullable=False,
-        default=RunStatus.created)
+        default=RunStatus.CREATED)
 
     def __repr__(self):
         return (f'<RunModel\n'
@@ -123,8 +123,8 @@ class Dependence(Base):
                 f'updated_at={self.updated_at}>')
 
 
-class Scheduled(Base):
-    __tablename__ = 'scheduled_task'
+class ScheduledTask(Base):
+    __tablename__ = 'scheduled_tasks'
 
     scheduled_id: Mapped[int] = mapped_column(primary_key=True,
                                               autoincrement=True)
@@ -136,7 +136,7 @@ class Scheduled(Base):
     status: Mapped[ScheduledStatus] = mapped_column(
         Enum(ScheduledStatus, name="scheduled_status"),
         nullable=False,
-        default=ScheduledStatus.scheduled)
+        default=ScheduledStatus.SCHEDULED)
 
     def __repr__(self):
         return (f'<Scheduled\n'
