@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 import logging
-from anthill import db, schemas
+from anthill import db, schemas, models
 from anthill.repos import dependencies
 from datetime import datetime, UTC
 from typing import Any
@@ -26,7 +26,7 @@ def prepare(data: dict[str, Any]) -> schemas.Dependence:
     )
 
 
-def convert(dependence: schemas.Dependence) -> dict[str, Any]:
+def convert(dependence: models.Dependence) -> dict[str, Any]:
 
     converted_dependence = {
         "dependence_id": dependence.dependence_id,
