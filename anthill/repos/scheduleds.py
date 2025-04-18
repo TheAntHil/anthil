@@ -8,11 +8,10 @@ logger = logging.getLogger(__name__)
 
 
 class ScheduledRepo:
-    def add(self, session: Session, scheduled_id: int, job_id: int,
+    def add(self, session: Session, job_id: int,
             scheduled_at: datetime,
             status: models.ScheduledStatus) -> models.Scheduled:
         scheduled_model = models.Scheduled(
-            scheduled_id=scheduled_id,
             job_id=job_id,
             scheduled_at=scheduled_at,
             status=status

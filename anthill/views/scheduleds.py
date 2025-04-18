@@ -20,7 +20,6 @@ def create_scheduled() -> tuple[Response, int]:
             scheduled_repo = scheduleds.ScheduledRepo()
             scheduled = scheduled_repo.add(
                         session,
-                        prepared_scheduled.scheduled_id,
                         prepared_scheduled.job_id,
                         prepared_scheduled.scheduled_at,
                         prepared_scheduled.status,
