@@ -12,6 +12,11 @@ class RunStatus(PyEnum):
     triggered = "triggered"
 
 
+class ScheduledStatus(PyEnum):
+    scheduled = "scheduled"
+    triggered = "triggered"
+    cancelled = "cancelled"
+
 class Run(Base):
     __tablename__ = 'runs'
 
@@ -122,14 +127,15 @@ class Scheduled(Base):
 
     scheduled_id: Mapped[int] = mapped_column(primary_key=True,
                                               autoincrement=True)
-    job_id: Mapped[int] = mapped_column(ForeignKey("run.job_id"))
+    job_id: Mapped[int] = mapped_column(ForeignKey("job.job_id"))
     scheduled_at: Mapped[datetime] = mapped_column(
         default=datetime.now(tz=UTC),
         onupdate=datetime.now(tz=UTC)
     )
-    status: Mapped[RunStatus] = mapped_column(
-        Enum(RunStatus, name="run_status"),
-        nullable=False)
+    status: Mapped[ScheduledStatus] = mapped_column(
+        Enum(ScheduledStatus, name="scheduled_status"),
+        nullable=False,
+        default=ScheduledStatus.scheduled)
 
     def __repr__(self):
         return (f'<Scheduled\n'
