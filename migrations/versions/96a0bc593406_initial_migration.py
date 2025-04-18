@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: 518b33b308bb
+Revision ID: 96a0bc593406
 Revises: 
-Create Date: 2025-04-18 19:51:35.253118
+Create Date: 2025-04-18 22:51:01.725859
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '518b33b308bb'
+revision: str = '96a0bc593406'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -60,7 +60,7 @@ def upgrade() -> None:
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.Column('start_time', sa.DateTime(), nullable=False),
-    sa.Column('status', sa.Enum('created', 'scheduled', 'triggered', name='run_status'), nullable=False),
+    sa.Column('status', sa.Enum('CREATED', 'SCHEDULED', 'TRIGGERED', name='run_status'), nullable=False),
     sa.ForeignKeyConstraint(['job_id'], ['jobs.job_id'], ),
     sa.PrimaryKeyConstraint('run_id')
     )
@@ -68,7 +68,7 @@ def upgrade() -> None:
     sa.Column('scheduled_id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('job_id', sa.Integer(), nullable=False),
     sa.Column('scheduled_at', sa.DateTime(), nullable=False),
-    sa.Column('status', sa.Enum('scheduled', 'triggered', 'cancelled', name='scheduled_status'), nullable=False),
+    sa.Column('status', sa.Enum('SCHEDULED', 'TRIGGERED', 'CANCELLED', name='scheduled_status'), nullable=False),
     sa.ForeignKeyConstraint(['job_id'], ['jobs.job_id'], ),
     sa.PrimaryKeyConstraint('scheduled_id')
     )
