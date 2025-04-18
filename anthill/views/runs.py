@@ -46,7 +46,7 @@ def convert(run: models.Run) -> dict[str, Any]:
 
 
 @view.route("/", methods=["POST"])
-def create_run():
+def create_run() -> tuple[Response, int]:
     run = request.get_json()
     logger.info(f"Received data: {run}")
     try:
