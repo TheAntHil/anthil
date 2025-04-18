@@ -128,7 +128,7 @@ class Scheduled(Base):
 
     scheduled_id: Mapped[int] = mapped_column(primary_key=True,
                                               autoincrement=True)
-    job_id: Mapped[int] = mapped_column(ForeignKey("job.job_id"))
+    job_id: Mapped[int] = mapped_column(ForeignKey("jobs.job_id"))
     scheduled_at: Mapped[datetime] = mapped_column(
         default=datetime.now(tz=UTC),
         onupdate=datetime.now(tz=UTC)
