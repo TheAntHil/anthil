@@ -7,15 +7,15 @@ import enum
 
 
 class RunStatus(enum.Enum):
-    created = "created"
-    scheduled = "scheduled"
-    triggered = "triggered"
+    created = "CREATED"
+    scheduled = "SCHEDULED"
+    triggered = "TRIGGERED"
 
 
 class ScheduledStatus(enum.Enum):
-    scheduled = "scheduled"
-    triggered = "triggered"
-    cancelled = "cancelled"
+    scheduled = "SCHEDULED"
+    triggered = "TRIGGERED"
+    cancelled = "CANCELLED"
 
 
 class Run(Base):
