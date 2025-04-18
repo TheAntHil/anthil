@@ -3,16 +3,16 @@ from datetime import datetime, UTC
 from sqlalchemy import String, ForeignKey, Enum, UniqueConstraint
 from uuid import UUID
 from anthill.db import Base
-from enum import Enum as PyEnum
+import enum
 
 
-class RunStatus(PyEnum):
+class RunStatus(enum.Enum):
     created = "created"
     scheduled = "scheduled"
     triggered = "triggered"
 
 
-class ScheduledStatus(PyEnum):
+class ScheduledStatus(enum.Enum):
     scheduled = "scheduled"
     triggered = "triggered"
     cancelled = "cancelled"
