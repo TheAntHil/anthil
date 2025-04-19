@@ -5,6 +5,7 @@ from alembic import context
 from anthill.config import get_db_url
 from anthill.db import Base
 from anthill.models import *
+import alembic_postgresql_enum
 
 
 # this is the Alembic Config object, which provides
