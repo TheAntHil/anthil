@@ -75,4 +75,11 @@
       alembic upgrade head
       ```
 
-4. **DLL**:
+5. **DOCKER**:
+
+docker compose pull
+docker compose up -d db
+docker compose logs --tail 100 -f db
+docker compose stop -t1 db - остановить
+docker compose down -t1 остановить и удалить
+docker compose ps
