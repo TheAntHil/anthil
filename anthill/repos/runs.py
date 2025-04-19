@@ -40,7 +40,7 @@ class RunRepo:
         result = session.execute(query)
         runs = result.scalars().all()
         for run in runs:
-            run.status = models.RunStatus.scheduled
+            run.status = models.RunStatus.SCHEDULED
             run.updated_at = datetime.now(tz=UTC)
         session.commit()
         return runs

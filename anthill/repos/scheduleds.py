@@ -10,8 +10,8 @@ logger = logging.getLogger(__name__)
 class ScheduledRepo:
     def add(self, session: Session, job_id: int,
             scheduled_at: datetime,
-            status: models.ScheduledStatus) -> models.Scheduled:
-        scheduled_model = models.Scheduled(
+            status: models.ScheduledStatus) -> models.ScheduledTask:
+        scheduled_model = models.ScheduledTask(
             job_id=job_id,
             scheduled_at=scheduled_at,
             status=status

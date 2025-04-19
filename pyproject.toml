@@ -8,6 +8,7 @@ dependencies = [
     "sqlalchemy==2.0.39",
     "psycopg2==2.9.10",
     "alembic>=1.15.2",
+    "alembic-postgresql-enum",
 ]
 
 [project.optional-dependencies]
