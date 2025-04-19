@@ -83,3 +83,4 @@ docker compose logs --tail 100 -f db
 docker compose stop -t1 db - остановить
 docker compose down -t1 остановить и удалить
 docker compose ps
+docker system prune -af --volumes тотал
