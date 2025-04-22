@@ -1,0 +1,11 @@
+meta {
+  name: scheduled.get
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{endpoint}}/api/v1/admin/scheduleds/
+  body: none
+  auth: inherit
+}
