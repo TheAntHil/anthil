@@ -54,3 +54,16 @@ def create_scheduled() -> tuple[Response, int]:
     except Exception as e:
         logger.exception("Error processing request")
         return jsonify({"error": str(e)}), 500
+
+
+@view.route('/', methods=['GET'])
+def get_tasks():
+    try:
+        with db.db_session() as session:
+            repo = scheduleds.ScheduledRepo()
+            db_tasks = repo.get_scheduled_tasks(session)
+            converted_tasks = [convert(task) for task in db_tasks]
+            return jsonify(converted_tasks)
+    except Exception as e:
+        logger.exception("Error processing request")
+        return jsonify({"error": str(e)}), 500
