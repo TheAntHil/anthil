@@ -64,4 +64,13 @@ def create_job() -> tuple[Response, int]:
 
 @view.get('/')
 def compute_jobs_to_schedule():
-    pass
+    job_id = request.args.get("job_id")
+    try:
+        with db.db_session() as session:
+            job_repo = jobs.JobRepo()
+            db_job = job_repo.get_jobs_by_id(job_id, session)
+            converted_job = convert(db_job)
+            return jsonify(converted_job)
+    except Exception as e:
+        logger.exception("Error processing request")
+        return jsonify({"error": str(e)}), 500
