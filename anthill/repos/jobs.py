@@ -56,7 +56,8 @@ class JobRepo:
         jobs = result.scalars().all()
         return jobs
 
-    def get_jobs_by_id(self, job_id: int, session: Session) -> models.Job:
+    def get_jobs_by_id(self, job_id: int,
+                       session: Session) -> models.Job | None:
         query = select(models.Job).where(models.Job.job_id == job_id)
         result = session.execute(query)
         job = result.scalars().one_or_none()
