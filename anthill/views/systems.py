@@ -61,3 +61,18 @@ def create_system() -> tuple[Response, int]:
     except Exception as e:
         logger.exception("Error processing request")
         return jsonify({"error": str(e)}), 500
+
+
+@view.get('/<int:system_id>')
+def get_system_by_id(system_id: int):
+    try:
+        with db.db_session() as session:
+            system_repo = systems.SystemRepo()
+            db_system = system_repo.get_system_by_id(system_id, session)
+            if db_system is None:
+                return jsonify({"error": "System not found"}), 404
+            converted_system = convert(db_system)
+            return jsonify(converted_system)
+    except Exception as e:
+        logger.exception("Error processing request")
+        return jsonify({"error": str(e)}), 500
