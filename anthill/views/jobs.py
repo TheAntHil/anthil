@@ -68,6 +68,8 @@ def get_job_by_id(job_id: int):
         with db.db_session() as session:
             job_repo = jobs.JobRepo()
             db_job = job_repo.get_jobs_by_id(job_id, session)
+            if db_job is None:
+                return jsonify({"error": "Job not found"}), 404
             converted_job = convert(db_job)
             return jsonify(converted_job)
     except Exception as e:
