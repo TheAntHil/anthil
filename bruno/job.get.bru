@@ -1,0 +1,11 @@
+meta {
+  name: job.get
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{endpoint}}/api/v1/admin/jobs/
+  body: none
+  auth: inherit
+}

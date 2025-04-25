@@ -62,6 +62,21 @@ def create_job() -> tuple[Response, int]:
         return jsonify({"error": str(e)}), 500
 
 
-@view.get('/')
-def compute_jobs_to_schedule():
-    pass
+@view.get('/<int:job_id>')
+def get_job_by_id(job_id: int):
+    try:
+        with db.db_session() as session:
+            job_repo = jobs.JobRepo()
+            db_job = job_repo.get_jobs_by_id(job_id, session)
+            if db_job is None:
+                return jsonify({"error": "Job not found"}), 404
+            converted_job = convert(db_job)
+            return jsonify(converted_job)
+    except Exception as e:
+        logger.exception("Error processing request")
+        return jsonify({"error": str(e)}), 500
+
+
+# @view.get('/')
+# def compute_jobs_to_schedule():
+#     pass
