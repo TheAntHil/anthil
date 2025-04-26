@@ -1,0 +1,11 @@
+meta {
+  name: scheduled_status.update
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{endpoint}}/api/v1/admin/scheduleds/
+  body: none
+  auth: inherit
+}
