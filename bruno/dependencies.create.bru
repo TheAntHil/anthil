@@ -1,19 +1,19 @@
 meta {
   name: dependencies.create
   type: http
-  seq: 6
+  seq: 5
 }
 
 post {
-  url: http://localhost:8080/api/v1/admin/dependencies/
+  url: {{endpoint}}/api/v1/admin/dependencies/
   body: json
   auth: inherit
 }
 
 body:json {
   {
-    "completed_job_id":7,
-    "trigger_job_id":6
+    "completed_job_id":1,
+    "trigger_job_id":2
   }
   
 }

@@ -1,11 +1,11 @@
 meta {
   name: create systems
   type: http
-  seq: 2
+  seq: 1
 }
 
 post {
-  url: http://localhost:8080/api/v1/admin/systems/
+  url: {{endpoint}}/api/v1/admin/systems/
   body: json
   auth: inherit
 }
@@ -13,7 +13,7 @@ post {
 body:json {
   {
     "code":"SPB_AF",
-    "url":"airflow.k8s.r",
+    "url":"airflow.k8s.ru",
     "token":"askfjigwo3f322fsfs",
     "system_type":"airflow"
   }

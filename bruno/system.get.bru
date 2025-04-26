@@ -1,0 +1,11 @@
+meta {
+  name: system.get
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{endpoint}}/api/v1/admin/systems/1
+  body: none
+  auth: inherit
+}

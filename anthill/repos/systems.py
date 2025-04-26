@@ -1,5 +1,6 @@
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
+from sqlalchemy import select
 from datetime import datetime
 import logging
 from anthill import models
@@ -30,3 +31,11 @@ class SystemRepo:
             logger.exception("unhandled error")
             raise
         return system_model
+
+    def get_system_by_id(self, system_id: int,
+                         session: Session) -> models.System | None:
+        query = select(models.System)
+        query = query.where(models.System.system_id == system_id)
+        result = session.execute(query)
+        system = result.scalars().one_or_none()
+        return system
