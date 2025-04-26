@@ -67,3 +67,18 @@ def get_tasks():
     except Exception as e:
         logger.exception("Error processing request")
         return jsonify({"error": str(e)}), 500
+
+
+@view.post("/<int:task_id>/triggered")
+def update_task_status(task_id: int):
+    try:
+        with db.db_session() as session:
+            repo = scheduleds.ScheduledRepo()
+            if not repo.get_task_by_id(task_id, session):
+                return jsonify({"error": "Task not found"}), 404
+            repo.update_status_task(session, task_id)
+            logger.info("Task status update")
+            return jsonify({}), 204
+    except Exception as e:
+        logger.exception("Error processing request")
+        return jsonify({"error": str(e)}), 500

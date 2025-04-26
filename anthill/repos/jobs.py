@@ -49,7 +49,7 @@ class JobRepo:
             DependesRun,
             DependesRun.job_id == models.Job.job_id,
         ).where(
-            DependesRun.updated_at > datetime.now() - timedelta(days=1),
+            DependesRun.updated_at > datetime.now() - timedelta(minutes=1),
         )
 
         result = session.execute(query)
