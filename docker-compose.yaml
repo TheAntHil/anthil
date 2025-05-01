@@ -1,10 +1,30 @@
 
 services:
-
   db:
-    image: postgres
+    image: postgres:16
     shm_size: 128mb
     ports:
       - 5432:5432
     env_file:
       - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    command: sh -c "while ! nc -z db 5432; do sleep 1; done && python -m anthill"
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

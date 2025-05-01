@@ -75,12 +75,46 @@
       alembic upgrade head
       ```
 
-5. **DOCKER**:
+5. ## Управление Docker
 
-docker compose pull
+### Базовые команды
+
+```bash
+# Запуск всех сервисов в фоновом режиме
+docker compose up -d
+
+# Запуск только сервиса БД
 docker compose up -d db
-docker compose logs --tail 100 -f db
-docker compose stop -t1 db - остановить
-docker compose down -t1 остановить и удалить
+
+# Остановка всех сервисов с таймаутом 1 сек
+docker compose stop -t1
+
+# Остановка и удаление контейнеров/сетей
+docker compose down -t1
+
+# Просмотр статуса контейнеров
 docker compose ps
-docker system prune -af --volumes тотал
+
+# Просмотр логов БД (последние 100 строк)
+docker compose logs --tail 100 -f db
+
+# Обновить образы
+docker compose pull
+
+# Сборка с кэшем
+docker compose build
+
+# Полная пересборка
+docker compose build --no-cache
+
+# Удалить всё (контейнеры, образы, volumes)
+docker system prune -af --volumes
+
+# Live-режим разработки
+docker compose up -d db && docker compose up app
+
+# Вход в контейнер
+docker compose exec app bash
+
+# Применить миграции
+docker compose exec app alembic upgrade head
