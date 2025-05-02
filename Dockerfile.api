@@ -13,4 +13,4 @@ COPY . .
 
 RUN pip install uv && uv pip install . --system --no-cache-dir
 
-CMD ["sh", "-c", "while ! nc -z db 5432; do sleep 1; done && python -m anthill.main"]
+CMD ["sh", "-c", "while ! nc -z db 5432; do sleep 1; done && python -m anthill.__main__"]

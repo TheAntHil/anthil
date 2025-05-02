@@ -118,3 +118,11 @@ docker compose exec app bash
 
 # Применить миграции
 docker compose exec app alembic upgrade head
+
+# Полная пересборка
+docker compose down -v
+docker compose build --no-cache
+docker compose up -d
+
+# Проверка логов
+docker compose logs -f api scheduler triggerier

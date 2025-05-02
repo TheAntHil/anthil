@@ -1,30 +1,46 @@
-
 services:
+
   db:
-    image: postgres:16
+    image: postgres:16  # Явно указываем версию
     shm_size: 128mb
     ports:
       - 5432:5432
     env_file:
       - .env
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
+    healthcheck:  # Добавляем healthcheck
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
-  app:
-    build: .
-    command: sh -c "while ! nc -z db 5432; do sleep 1; done && python -m anthill"
+  api:
+    build: 
+      context: .
+      dockerfile: Dockerfile.api
     ports:
       - "8080:8080"
-    env_file:
-      - .env
+    env_file: .env
     depends_on:
       db:
         condition: service_healthy
+
+  scheduler:
+    build:
+      context: ../worker
+      dockerfile: Dockerfile.scheduler
+    env_file: .env
+    depends_on:
+      - api
+
+  triggerier:
+    build:
+      context: ../worker
+      dockerfile: Dockerfile.triggerier
+    env_file: .env
+    depends_on:
+      - api
 
 volumes:
   postgres_data:
