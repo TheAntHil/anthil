@@ -1,16 +1,16 @@
 FROM python:3.12-slim
 
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    gcc \
-    python3-dev \
-    netcat-openbsd \
-    && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /app
 
-COPY . .
+COPY pyproject.toml uv.lock /app/
+RUN pip install uv==0.7.2 \
+ && uv export -o requirements.txt --no-header --no-hashes \
+ && pip install -r requirements.txt --no-cache-dir -U \
+ && pip uninstall -y uv
 
-RUN pip install uv && uv pip install . --system --no-cache-dir
+COPY alembic.ini /app/
+COPY migrations /app/migrations
+COPY anthill /app/anthill
 
-CMD ["sh", "-c", "while ! nc -z db 5432; do sleep 1; done && python -m anthill.__main__"]
+
+CMD ["python", "-m", "anthill"]
