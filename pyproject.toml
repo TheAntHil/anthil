@@ -1,7 +1,7 @@
 [project]
-name = "anthill"
+name = "anthil"
 version = "0.1.0"
-requires-python = ">=3.12"
+
 dependencies = [
     "flask>=2.3.3,<2.4",
     "python-dotenv>=1.1.0,<2",
@@ -9,7 +9,14 @@ dependencies = [
     "psycopg2==2.9.10",
     "alembic>=1.15.2",
     "alembic-postgresql-enum",
-    
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy==1.15.0",
+    "ruff==0.11.5",
+    "flake8==7.2.0",
+    "pytest==8.1.1"
 ]
 
 [tool.setuptools]
