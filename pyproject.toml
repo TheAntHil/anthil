@@ -6,7 +6,7 @@ dependencies = [
     "flask>=2.3.3,<2.4",
     "python-dotenv>=1.1.0,<2",
     "sqlalchemy==2.0.39",
-    "psycopg2==2.9.10",
+    "psycopg2-binary==2.9.10",
     "alembic>=1.15.2",
     "alembic-postgresql-enum",
 ]
