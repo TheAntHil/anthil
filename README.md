@@ -121,7 +121,7 @@ docker compose exec app alembic upgrade head
 
 # Полная пересборка
 docker compose down -v
-docker compose build --no-cache
+docker compose build
 docker compose up -d
 
 # Проверка логов

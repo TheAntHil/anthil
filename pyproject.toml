@@ -9,6 +9,7 @@ dependencies = [
     "psycopg2==2.9.10",
     "alembic>=1.15.2",
     "alembic-postgresql-enum",
+    
 ]
 
 [tool.setuptools]

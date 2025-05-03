@@ -14,33 +14,22 @@ services:
       retries: 5
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - antworker
 
   api:
-    build: 
-      context: .
-      dockerfile: Dockerfile.api
+    build: .
     ports:
       - "8080:8080"
     env_file: .env
     depends_on:
       db:
         condition: service_healthy
-
-  scheduler:
-    build:
-      context: ../worker
-      dockerfile: Dockerfile.scheduler
-    env_file: .env
-    depends_on:
-      - api
-
-  triggerier:
-    build:
-      context: ../worker
-      dockerfile: Dockerfile.triggerier
-    env_file: .env
-    depends_on:
-      - api
+    networks:
+      - antworker
 
 volumes:
   postgres_data:
+
+networks:
+  antworker:
