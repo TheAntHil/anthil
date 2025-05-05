@@ -22,9 +22,12 @@ class DependenceRepo:
             session.add(dependence_model)
             session.commit()
             session.refresh(dependence_model)
-            logger.debug("QUERY record successfully inserted.")
+            logger.debug(
+                "QUERY: DependenceRepo.add — inserted dependence "
+                f"(completed_job_id={completed_job_id}, "
+                f"trigger_job_id={trigger_job_id})")
         except SQLAlchemyError:
             session.rollback()
-            logger.exception("unhandled error")
+            logger.exception("Unhandled error in DependenceRepo.add")
             raise
         return dependence_model

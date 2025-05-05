@@ -25,17 +25,36 @@ class SystemRepo:
             session.add(system_model)
             session.commit()
             session.refresh(system_model)
-            logger.debug("QUERY record successfully inserted.")
-        except SQLAlchemyError:
+            logger.debug(
+                f"QUERY: SystemRepo.add — inserted system "
+                f"(code={code}, url={url}, "
+                f"system_type={system_type}, "
+                f"created_at={created_at}, "
+                f"updated_at={updated_at})")
+        except SQLAlchemyError as e:
             session.rollback()
-            logger.exception("unhandled error")
+            logger.exception(
+                f"QUERY FAILED: SystemRepo.add — "
+                f"(code={code}, "
+                f"url={url}, "
+                f"system_type={system_type}, "
+                f"created_at={created_at}, "
+                f"updated_at={updated_at}) "
+                f"— {e}")
             raise
         return system_model
 
     def get_system_by_id(self, system_id: int,
                          session: Session) -> models.System | None:
-        query = select(models.System)
-        query = query.where(models.System.system_id == system_id)
-        result = session.execute(query)
-        system = result.scalars().one_or_none()
+        try:
+            query = select(models.System)
+            query = query.where(models.System.system_id == system_id)
+            logger.debug(f"QUERY: SystemRepo.get_system_by_id "
+                         f"— system_id={system_id}")
+            result = session.execute(query)
+            system = result.scalars().one_or_none()
+        except SQLAlchemyError as e:
+            logger.exception(f"QUERY FAILED: SystemRepo.get_system_by_id "
+                             f"— system_id={system_id} — {e}")
+            raise
         return system
