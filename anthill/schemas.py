@@ -1,7 +1,6 @@
 from datetime import datetime
-import dataclasses as dc
 from anthill.models import RunStatus, ScheduledStatus
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from uuid import UUID
 
 
@@ -14,8 +13,7 @@ class Run(BaseModel):
     updated_at: datetime
     status: RunStatus
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class RunCreate(BaseModel):
@@ -23,8 +21,7 @@ class RunCreate(BaseModel):
     external_status: str
     start_time: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class System(BaseModel):
@@ -36,8 +33,7 @@ class System(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Job(BaseModel):
@@ -48,8 +44,7 @@ class Job(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Dependence(BaseModel):
@@ -60,8 +55,7 @@ class Dependence(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Scheduled(BaseModel):
@@ -70,5 +64,4 @@ class Scheduled(BaseModel):
     scheduled_at: datetime
     status: ScheduledStatus
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

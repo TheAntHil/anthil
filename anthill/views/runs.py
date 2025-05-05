@@ -46,8 +46,15 @@ def create_run() -> tuple[Response, int]:
                                now,
                                models.RunStatus.CREATED,
                                )
-            converted_run = convert(run)
-            return jsonify(converted_run), 201
+            valided_run = schemas.Run.model_validate(run)
+            logger.debug(f"Created run object: {valided_run}")
+
+        return jsonify(valided_run.model_dump()), 201
+
+    except ValueError as ve:
+        logger.exception("Invalid data received")
+        return jsonify({"error": str(ve)}), 400
+
     except Exception as e:
         logger.exception("Error processing request")
         return jsonify({"error": str(e)}), 500
@@ -55,15 +62,20 @@ def create_run() -> tuple[Response, int]:
 
 @view.get("/")
 def get_runs():
-    after = datetime.fromisoformat(request.args.get("after").replace(" ", "+"))
-    logger.info(f"Received request, parameters: after={after}")
+    after_str = request.args.get("after")
+    if not after_str:
+        return jsonify({"error": "'after' query parameter is required"}), 400
     try:
+        after = datetime.fromisoformat(after_str.replace(" ", "+"))
+        logger.debug(f"Received request, parameters: after={after}")
         with db.db_session() as session:
             run_repo = runs.RunRepo()
             db_runs = run_repo.get_updates(session, after)
-            converted_runs = [convert(run) for run in db_runs]
-            logger.info(f"Quantity in the sample {len(converted_runs)} runs.")
-            return jsonify(converted_runs)
+            valided_runs = [schemas.Run.model_validate(run).model_dump()
+                            for run in db_runs]
+        logger.debug(f"Found {len(valided_runs)} runs.")
+        return jsonify(valided_runs)
+
     except Exception as e:
         logger.exception("Error processing request")
         return jsonify({"error": str(e)}), 500
@@ -76,8 +88,10 @@ def compute_jobs_to_schedule(run_id: UUID) -> tuple[Response, int]:
             jobs_repo = jobs.JobRepo()
             schedule_jobs = jobs_repo.get_schedule_jobs_for_run(run_id,
                                                                 session)
-            converted_job = [jobs_view.convert(job) for job in schedule_jobs]
-            return jsonify(converted_job), 200
+            valided_jobs = [schemas.Job.model_validate(job).model_dump()
+                            for job in schedule_jobs]
+            logger.debug(f"Found {len(valided_jobs)} jobs for run_id={run_id}")
+            return jsonify(valided_jobs), 200
     except Exception as e:
         logger.exception("Error processing request")
         return jsonify({"error": str(e)}), 500
