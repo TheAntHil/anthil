@@ -18,6 +18,15 @@ class Run(BaseModel):
         from_attributes = True
 
 
+class RunCreate(BaseModel):
+    job_id: int
+    external_status: str
+    start_time: datetime
+
+    class Config:
+        from_attributes = True
+
+
 class System(BaseModel):
     system_id: int
     code: str

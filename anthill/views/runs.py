@@ -12,26 +12,6 @@ view = Blueprint('runs', __name__, url_prefix='/api/v1/srv/runs')
 logger = logging.getLogger(__name__)
 
 
-def prepare(data: dict[str, Any]) -> schemas.Run:
-    external_status = data["external_status"]
-    start_time = datetime.fromisoformat(data["start_time"])
-    run_id = str(uuid4())
-    job_id = data["job_id"]
-    created_at = datetime.now(tz=UTC)
-    updated_at = datetime.now(tz=UTC)
-    status = models.RunStatus.CREATED
-
-    return schemas.Run(
-        run_id=run_id,
-        job_id=job_id,
-        external_status=external_status,
-        start_time=start_time,
-        created_at=created_at,
-        updated_at=updated_at,
-        status=status,
-        )
-
-
 def convert(run: models.Run) -> dict[str, Any]:
     converted_run = {
         "run_id": run.run_id,
@@ -47,24 +27,27 @@ def convert(run: models.Run) -> dict[str, Any]:
 
 @view.route("/", methods=["POST"])
 def create_run() -> tuple[Response, int]:
-    run = request.get_json()
-    logger.info(f"Received data: {run}")
     try:
-        prepared_run = prepare(run)
-        logger.info(f"Processing result: {prepared_run}")
+        json_run = request.get_json()
+        if not json_run:
+            return jsonify({"error": "Invalid JSON body"}), 400
+        run_data = schemas.RunCreate.model_validate(json_run)
+        logger.debug(f"Validated data: {run_data}")
+        now = datetime.now(tz=UTC)
+        run_uuid = uuid4()
         with db.db_session() as session:
             run_repo = runs.RunRepo()
             run = run_repo.add(session,
-                               prepared_run.run_id,
-                               prepared_run.job_id,
-                               prepared_run.external_status,
-                               prepared_run.start_time,
-                               prepared_run.created_at,
-                               prepared_run.updated_at,
-                               prepared_run.status,
+                               run_uuid,
+                               run_data.job_id,
+                               run_data.external_status,
+                               run_data.start_time,
+                               now,
+                               now,
+                               models.RunStatus.CREATED,
                                )
-        converted_run = convert(run)
-        return jsonify(converted_run), 201
+            converted_run = convert(run)
+            return jsonify(converted_run), 201
     except Exception as e:
         logger.exception("Error processing request")
         return jsonify({"error": str(e)}), 500
