@@ -75,6 +75,13 @@ class Dependence(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class DependenceCreate(BaseModel):
+    completed_job_id: int
+    trigger_job_id: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class Scheduled(BaseModel):
     scheduled_id: int
     job_id: int
