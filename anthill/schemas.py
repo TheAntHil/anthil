@@ -1,11 +1,12 @@
 from datetime import datetime
 import dataclasses as dc
 from anthill.models import RunStatus, ScheduledStatus
+from pydantic import BaseModel
+from uuid import UUID
 
 
-@dc.dataclass
-class Run:
-    run_id: str
+class Run(BaseModel):
+    run_id: UUID
     job_id: int
     external_status: str
     start_time: datetime
@@ -13,9 +14,11 @@ class Run:
     updated_at: datetime
     status: RunStatus
 
+    class Config:
+        from_attributes = True
 
-@dc.dataclass
-class System:
+
+class System(BaseModel):
     system_id: int
     code: str
     url: str
@@ -24,9 +27,11 @@ class System:
     created_at: datetime
     updated_at: datetime
 
+    class Config:
+        from_attributes = True
 
-@dc.dataclass
-class Job:
+
+class Job(BaseModel):
     job_id: int
     system_id: int
     code: str
@@ -34,9 +39,11 @@ class Job:
     created_at: datetime
     updated_at: datetime
 
+    class Config:
+        from_attributes = True
 
-@dc.dataclass
-class Dependence:
+
+class Dependence(BaseModel):
     dependence_id: int
     completed_job_id: int
     trigger_job_id: int
@@ -44,10 +51,15 @@ class Dependence:
     created_at: datetime
     updated_at: datetime
 
+    class Config:
+        from_attributes = True
 
-@dc.dataclass
-class Scheduled:
+
+class Scheduled(BaseModel):
     scheduled_id: int
     job_id: int
     scheduled_at: datetime
     status: ScheduledStatus
+
+    class Config:
+        from_attributes = True
