@@ -9,6 +9,7 @@
 - **[Alembic](https://alembic.sqlalchemy.org/)** — для миграций базы данных.
 - **[PostgreSQL](https://www.postgresql.org/)** — для хранения данных.
 - **[python-dotenv](https://pypi.org/project/python-dotenv/)** — для работы с переменными окружения.
+- **[Pydantic](https://docs.pydantic.dev/latest/)** — для валидации и сериализации данных.
 - **[mypy](http://mypy-lang.org/)** — для статического анализа типов.
 - **[ruff](https://github.com/charliermarsh/ruff)** — для линтинга кода.
 - **[pytest](https://pytest.org/)** — для написания тестов.
@@ -75,7 +76,7 @@
       alembic upgrade head
       ```
 
-5. ## Управление Docker
+## Управление Docker
 
 ### Базовые команды
 
@@ -125,4 +126,5 @@ docker compose build
 docker compose up -d
 
 # Проверка логов
-docker compose logs -f api scheduler triggerier
+docker compose logs -f api
+

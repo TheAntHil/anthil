@@ -1,64 +1,40 @@
 from flask import Blueprint, request, jsonify, Response
 import logging
-from anthill import db, models, schemas
+from anthill import db, schemas
 from anthill.repos import jobs
 from datetime import datetime, UTC
-from typing import Any
-
 
 view = Blueprint('jobs', __name__, url_prefix='/api/v1/admin/jobs')
 logger = logging.getLogger(__name__)
 
 
-def prepare(data: dict[str, Any]) -> schemas.Job:
-    system_id = data["system_id"]
-    code = data["code"]
-    scheduler = data["scheduler"]
-    job_id = -1
-
-    return schemas.Job(
-        job_id=job_id,
-        system_id=system_id,
-        code=code,
-        scheduler=scheduler,
-        created_at=datetime.now(tz=UTC),
-        updated_at=datetime.now(tz=UTC),
-    )
-
-
-def convert(job: models.Job) -> dict[str, Any]:
-    converted_job = {
-        "job_id": job.job_id,
-        "system_id": job.system_id,
-        "code": job.code,
-        "scheduler": job.scheduler,
-        "created_at": job.created_at.isoformat(),
-        "updated_at": job.updated_at.isoformat()
-    }
-    return converted_job
-
-
 @view.route('/', methods=['POST'])
 def create_job() -> tuple[Response, int]:
-    job_json = request.get_json()
-    logger.info(f"Received data: {job_json}")
     try:
-        prepared_job = prepare(job_json)
-        logger.info(f"Processing result: {prepared_job}")
+        job_json = request.get_json()
+        if not job_json:
+            return jsonify({"error": "Invalid JSON body"}), 400
+        job_data = schemas.JobCreate.model_validate(job_json)
+        logger.debug(f"Validated job input: {job_data}")
+        now = datetime.now(tz=UTC)
         with db.db_session() as session:
             job_repo = jobs.JobRepo()
-            job = job_repo.add(
-                session,
-                prepared_job.system_id,
-                prepared_job.code,
-                prepared_job.scheduler,
-                prepared_job.created_at,
-                prepared_job.updated_at,
-            )
-        converted_job = convert(job)
-        return jsonify(converted_job), 201
+            job = job_repo.add(session,
+                               job_data.system_id,
+                               job_data.code,
+                               job_data.scheduler,
+                               now,
+                               now,
+                               )
+            valided_job = schemas.Job.model_validate(job)
+            logger.debug(f"Created job: {valided_job}")
+        return jsonify(valided_job.model_dump(mode="json")), 201
+
+    except ValueError as ve:
+        logger.exception("Invalid job data")
+        return jsonify({"error": str(ve)}), 400
     except Exception as e:
-        logger.exception("Error processing request")
+        logger.exception("Error creating job")
         return jsonify({"error": str(e)}), 500
 
 
@@ -70,10 +46,13 @@ def get_job_by_id(job_id: int):
             db_job = job_repo.get_jobs_by_id(job_id, session)
             if db_job is None:
                 return jsonify({"error": "Job not found"}), 404
-            converted_job = convert(db_job)
-            return jsonify(converted_job)
+
+            valided_job = schemas.Job.model_validate(db_job)
+            logger.debug(f"Fetched job: {valided_job}")
+            return jsonify(valided_job.model_dump(mode="json"))
+
     except Exception as e:
-        logger.exception("Error processing request")
+        logger.exception("Error fetching job")
         return jsonify({"error": str(e)}), 500
 
 

@@ -26,10 +26,19 @@ class JobRepo:
             session.add(job_model)
             session.commit()
             session.refresh(job_model)
-            logger.info("QUERY record successfully inserted.")
-        except SQLAlchemyError:
+            logger.debug(
+                "QUERY: JobRepo.add — inserted job "
+                f"(system_id={system_id}, "
+                f"(code='{code}', "
+                f"(scheduler='{scheduler}')")
+        except SQLAlchemyError as e:
             session.rollback()
-            logger.exception("unhandled error")
+            logger.exception(
+                f"QUERY FAILED: JobRepo.add — "
+                f"(system_id={system_id}, "
+                f"(code='{code}', "
+                f"(scheduler='{scheduler}')"
+                f" - {e}")
             raise
         return job_model
 
@@ -51,7 +60,8 @@ class JobRepo:
         ).where(
             DependesRun.updated_at > datetime.now() - timedelta(minutes=1),
         )
-
+        logger.debug(
+            f"QUERY: JobRepo.get_schedule_jobs_for_run — run_id={run_id}")
         result = session.execute(query)
         jobs = result.scalars().all()
         return jobs
@@ -59,6 +69,7 @@ class JobRepo:
     def get_jobs_by_id(self, job_id: int,
                        session: Session) -> models.Job | None:
         query = select(models.Job).where(models.Job.job_id == job_id)
+        logger.debug(f"QUERY: JobRepo.get_jobs_by_id — job_id={job_id}")
         result = session.execute(query)
         job = result.scalars().one_or_none()
         return job

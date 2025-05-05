@@ -5,12 +5,13 @@ from sqlalchemy import select
 from datetime import datetime, UTC
 from anthill import models
 from typing import Sequence
+from uuid import UUID
 
 logger = logging.getLogger(__name__)
 
 
 class RunRepo:
-    def add(self, session: Session, run_id: str, job_id: int,
+    def add(self, session: Session, run_id: UUID, job_id: int,
             external_status: str, start_time: datetime, created_at: datetime,
             updated_at: datetime, status: models.RunStatus) -> models.Run:
         run_model = models.Run(
@@ -26,21 +27,37 @@ class RunRepo:
             session.add(run_model)
             session.commit()
             session.refresh(run_model)
-            logger.info("QUERY Record successfully inserted.")
-        except SQLAlchemyError:
+            logger.debug(
+                f"QUERY: RunRepo.add — inserted run "
+                f"(run_id={run_id}, "
+                f"(job_id={job_id}, "
+                f"status={status})")
+        except SQLAlchemyError as e:
             session.rollback()
-            logger.exception("unhandled error")
+            logger.exception(
+                f"QUERY FAILED: RunRepo.add — "
+                f"(run_id={run_id}, "
+                f"job_id={job_id}, "
+                f"status={status}) "
+                f"— {e}")
             raise
         return run_model
 
     def get_updates(self, session: Session,
                     after: datetime) -> Sequence[models.Run]:
-        query = select(models.Run).where(models.Run.updated_at > after)
-        query = query.order_by(models.Run.updated_at)
-        result = session.execute(query)
-        runs = result.scalars().all()
-        for run in runs:
-            run.status = models.RunStatus.SCHEDULED
-            run.updated_at = datetime.now(tz=UTC)
-        session.commit()
+        try:
+            query = select(models.Run).where(models.Run.updated_at > after)
+            query = query.order_by(models.Run.updated_at)
+            logger.debug(f"QUERY: RunRepo.get_updates — {after.isoformat()}")
+            result = session.execute(query)
+            runs = result.scalars().all()
+            for run in runs:
+                run.status = models.RunStatus.SCHEDULED
+                run.updated_at = datetime.now(tz=UTC)
+            session.commit()
+        except SQLAlchemyError as e:
+            session.rollback()
+            logger.exception(f"QUERY FAILED: "
+                             f"RunRepo.get_updates — after={after} "
+                             f" — {e}")
         return runs
