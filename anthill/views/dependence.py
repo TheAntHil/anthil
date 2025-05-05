@@ -29,7 +29,7 @@ def create_dependence() -> tuple[Response, int]:
                                   )
         valided_dependence = schemas.Dependence.model_validate(dependence)
         logger.debug(f"Converted dependence: {valided_dependence}")
-        return jsonify(valided_dependence.model_dump()), 201
+        return jsonify(valided_dependence.model_dump(mode="json")), 201
 
     except Exception as e:
         logger.exception("Error processing request")

@@ -28,7 +28,7 @@ def create_job() -> tuple[Response, int]:
                                )
             valided_job = schemas.Job.model_validate(job)
             logger.debug(f"Created job: {valided_job}")
-        return jsonify(valided_job.model_dump()), 201
+        return jsonify(valided_job.model_dump(mode="json")), 201
 
     except ValueError as ve:
         logger.exception("Invalid job data")
@@ -49,7 +49,7 @@ def get_job_by_id(job_id: int):
 
             valided_job = schemas.Job.model_validate(db_job)
             logger.debug(f"Fetched job: {valided_job}")
-            return jsonify(valided_job.model_dump())
+            return jsonify(valided_job.model_dump(mode="json"))
 
     except Exception as e:
         logger.exception("Error fetching job")

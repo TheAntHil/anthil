@@ -32,7 +32,7 @@ def create_run() -> tuple[Response, int]:
                                )
             valided_run = schemas.Run.model_validate(run)
             logger.debug(f"Created run object: {valided_run}")
-        return jsonify(valided_run.model_dump()), 201
+        return jsonify(valided_run.model_dump(mode="json")), 201
 
     except ValueError as ve:
         logger.exception("Invalid data received")
@@ -54,8 +54,8 @@ def get_runs():
         with db.db_session() as session:
             run_repo = runs.RunRepo()
             db_runs = run_repo.get_updates(session, after)
-            valided_runs = [schemas.Run.model_validate(run).model_dump()
-                            for run in db_runs]
+            valided_runs = [schemas.Run.model_validate(run)
+                            .model_dump(mode="json") for run in db_runs]
         logger.debug(f"Found {len(valided_runs)} runs.")
         return jsonify(valided_runs)
 
@@ -71,8 +71,8 @@ def compute_jobs_to_schedule(run_id: UUID) -> tuple[Response, int]:
             jobs_repo = jobs.JobRepo()
             schedule_jobs = jobs_repo.get_schedule_jobs_for_run(run_id,
                                                                 session)
-            valided_jobs = [schemas.Job.model_validate(job).model_dump()
-                            for job in schedule_jobs]
+            valided_jobs = [schemas.Job.model_validate(job)
+                            .model_dump(mode="json") for job in schedule_jobs]
             logger.debug(f"Found {len(valided_jobs)} jobs for run_id={run_id}")
             return jsonify(valided_jobs), 200
     except Exception as e:

@@ -31,7 +31,7 @@ def create_system() -> tuple[Response, int]:
             valided_system = schemas.System.model_validate(system)
             logger.debug(f"Created system: {valided_system}")
 
-        return jsonify(valided_system.model_dump()), 201
+        return jsonify(valided_system.model_dump(mode="json")), 201
 
     except ValueError as ve:
         logger.exception("Invalid system data")
@@ -53,7 +53,7 @@ def get_system_by_id(system_id: int):
 
             valided_system = schemas.System.model_validate(db_system)
             logger.debug(f"Fetched system: {valided_system}")
-            return jsonify(valided_system.model_dump())
+            return jsonify(valided_system.model_dump(mode="json"))
 
     except Exception as e:
         logger.exception("Error fetching system")

@@ -27,7 +27,7 @@ def create_scheduled() -> tuple[Response, int]:
                                  )
         valided_scheduled = schemas.Scheduled.model_validate(scheduled)
         logger.debug(f"Created scheduled task: {valided_scheduled}")
-        return jsonify(valided_scheduled.model_dump()), 201
+        return jsonify(valided_scheduled.model_dump(mode="json")), 201
     except Exception as e:
         logger.exception("Error creating scheduled task")
         return jsonify({"error": str(e)}), 500
@@ -40,7 +40,7 @@ def get_tasks():
             repo = scheduleds.ScheduledRepo()
             db_tasks = repo.get_scheduled_tasks(session)
             valided_tasks = [schemas.Scheduled.model_validate(task)
-                             .model_dump() for task in db_tasks]
+                             .model_dump(mode="json") for task in db_tasks]
             logger.debug(f"Fetched {len(valided_tasks)} scheduled tasks")
             return jsonify(valided_tasks)
     except Exception as e:
