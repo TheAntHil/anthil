@@ -82,3 +82,9 @@ class Scheduled(BaseModel):
     status: ScheduledStatus
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class ScheduledCreate(BaseModel):
+    job_id: int
+
+    model_config = ConfigDict(from_attributes=True)
