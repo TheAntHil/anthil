@@ -126,3 +126,4 @@ docker compose up -d
 
 # Проверка логов
 docker compose logs -f api scheduler triggerier
+docker compose logs -f scheduler triggerier

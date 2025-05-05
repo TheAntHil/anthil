@@ -22,7 +22,7 @@ class ScheduledRepo:
             session.add(scheduled_model)
             session.commit()
             session.refresh(scheduled_model)
-            logger.info("QUERY Record successfully inserted.")
+            logger.debug("QUERY Record successfully inserted.")
         except SQLAlchemyError:
             session.rollback()
             logger.exception("unhandled error")

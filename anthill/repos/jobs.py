@@ -26,7 +26,7 @@ class JobRepo:
             session.add(job_model)
             session.commit()
             session.refresh(job_model)
-            logger.info("QUERY record successfully inserted.")
+            logger.debug("QUERY record successfully inserted.")
         except SQLAlchemyError:
             session.rollback()
             logger.exception("unhandled error")

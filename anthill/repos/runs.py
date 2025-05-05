@@ -27,7 +27,7 @@ class RunRepo:
             session.add(run_model)
             session.commit()
             session.refresh(run_model)
-            logger.info("QUERY Record successfully inserted.")
+            logger.debug("QUERY Record successfully inserted.")
         except SQLAlchemyError:
             session.rollback()
             logger.exception("unhandled error")
