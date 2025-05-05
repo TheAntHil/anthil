@@ -3,26 +3,10 @@ from datetime import datetime, UTC
 import logging
 from anthill import db, schemas, models
 from anthill.repos import runs, jobs
-from anthill.views import jobs as jobs_view
 from uuid import UUID, uuid4
-from typing import Any
-
 
 view = Blueprint('runs', __name__, url_prefix='/api/v1/srv/runs')
 logger = logging.getLogger(__name__)
-
-
-def convert(run: models.Run) -> dict[str, Any]:
-    converted_run = {
-        "run_id": run.run_id,
-        "job_id": run.job_id,
-        "external_status": run.external_status,
-        "start_time": run.start_time.isoformat(),
-        "created_at": run.created_at.isoformat(),
-        "updated_at": run.updated_at.isoformat(),
-        "status": run.status.value,
-    }
-    return converted_run
 
 
 @view.route("/", methods=["POST"])
