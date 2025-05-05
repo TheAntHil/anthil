@@ -36,6 +36,15 @@ class System(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class SystemCreate(BaseModel):
+    code: str
+    url: str
+    token: str
+    system_type: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class Job(BaseModel):
     job_id: int
     system_id: int
