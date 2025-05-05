@@ -5,12 +5,13 @@ from sqlalchemy import select
 from datetime import datetime, UTC
 from anthill import models
 from typing import Sequence
+from uuid import UUID
 
 logger = logging.getLogger(__name__)
 
 
 class RunRepo:
-    def add(self, session: Session, run_id: str, job_id: int,
+    def add(self, session: Session, run_id: UUID, job_id: int,
             external_status: str, start_time: datetime, created_at: datetime,
             updated_at: datetime, status: models.RunStatus) -> models.Run:
         run_model = models.Run(
