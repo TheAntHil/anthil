@@ -32,7 +32,6 @@ def create_run() -> tuple[Response, int]:
                                )
             valided_run = schemas.Run.model_validate(run)
             logger.debug(f"Created run object: {valided_run}")
-
         return jsonify(valided_run.model_dump()), 201
 
     except ValueError as ve:

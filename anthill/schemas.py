@@ -47,6 +47,14 @@ class Job(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class JobCreate(BaseModel):
+    system_id: int
+    code: str
+    scheduler: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class Dependence(BaseModel):
     dependence_id: int
     completed_job_id: int
