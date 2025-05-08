@@ -9,7 +9,7 @@ view = Blueprint('runs', __name__, url_prefix='/api/v1/srv/runs')
 logger = logging.getLogger(__name__)
 
 
-@view.route("/", methods=["POST"])
+@view.post("/")
 def create_run() -> tuple[Response, int]:
     try:
         json_run = request.get_json()
@@ -43,19 +43,17 @@ def create_run() -> tuple[Response, int]:
         return jsonify({"error": str(e)}), 500
 
 
-@view.get("/")
-def get_runs():
-    after_str = request.args.get("after")
-    if not after_str:
-        return jsonify({"error": "'after' query parameter is required"}), 400
+@view.post("/acquire")
+def acquire():
     try:
-        after = datetime.fromisoformat(after_str.replace(" ", "+"))
-        logger.debug(f"Received request, parameters: after={after}")
+        logger.debug("Received request")
         with db.db_session() as session:
             run_repo = runs.RunRepo()
-            db_runs = run_repo.get_updates(session, after)
-            valided_runs = [schemas.Run.model_validate(run)
-                            .model_dump(mode="json") for run in db_runs]
+            db_runs = run_repo.acquire(session)
+            valided_runs = [
+                schemas.Run.model_validate(run).model_dump(mode="json")
+                for run in db_runs
+            ]
         logger.debug(f"Found {len(valided_runs)} runs.")
         return jsonify(valided_runs)
 

@@ -1,6 +1,7 @@
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session, aliased
 from sqlalchemy import select
+from sqlalchemy.sql.functions import coalesce
 from datetime import datetime, timedelta
 import logging
 from anthill import models
@@ -56,9 +57,11 @@ class JobRepo:
 
         query = query.join(
             DependesRun,
-            DependesRun.job_id == models.Job.job_id,
+            DependesRun.job_id == models.Job.job_id, isouter=True,
         ).where(
-            DependesRun.updated_at > datetime.now() - timedelta(minutes=1),
+            coalesce(
+                DependesRun.updated_at,
+                datetime(1970, 1, 1)) < datetime.now() - timedelta(minutes=1),
         )
         logger.debug(
             f"QUERY: JobRepo.get_schedule_jobs_for_run — run_id={run_id}")
