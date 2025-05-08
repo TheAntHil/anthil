@@ -1,0 +1,20 @@
+meta {
+  name: create airflow 1
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{endpoint}}/api/v1/admin/systems/
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "code":"AF1",
+    "url":"airflow1.k8s.ru",
+    "token":"askfjigwo3f32",
+    "system_type":"airflow"
+  }
+}

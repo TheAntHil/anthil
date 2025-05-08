@@ -1,0 +1,19 @@
+meta {
+  name: create job 1
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{endpoint}}/api/v1/admin/jobs/
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "system_id":1,
+    "code":"job_one_dag",
+    "scheduler":"0 0 * * *"
+  }
+}
