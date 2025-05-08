@@ -63,16 +63,15 @@ def acquire():
 
 
 @view.post("/<uuid:run_id>/schedule")
-def compute_jobs_to_schedule(run_id: UUID) -> tuple[Response, int]:
+def compute_jobs_to_schedule(run_id: UUID) -> list[int]:
     try:
         with db.db_session() as session:
             jobs_repo = jobs.JobRepo()
-            schedule_jobs = jobs_repo.get_schedule_jobs_for_run(run_id,
-                                                                session)
-            valided_jobs = [schemas.Job.model_validate(job)
-                            .model_dump(mode="json") for job in schedule_jobs]
-            logger.debug(f"Found {len(valided_jobs)} jobs for run_id={run_id}")
-            return jsonify(valided_jobs), 200
+            completed = jobs_repo.get_schedule_jobs_for_run(run_id, session)
+            required = jobs_repo.check_schedule_jobs(run_id, session)
+            job_ids = jobs_repo.filter_ready_to_start_jobs(completed,
+                                                           required)
+            return jsonify({"job_ids": job_ids})     
     except Exception as e:
         logger.exception("Error processing request")
         return jsonify({"error": str(e)}), 500
