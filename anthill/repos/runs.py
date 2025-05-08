@@ -43,12 +43,12 @@ class RunRepo:
             raise
         return run_model
 
-    def get_updates(self, session: Session,
-                    after: datetime) -> Sequence[models.Run]:
+    def acquire(self, session: Session) -> Sequence[models.Run]:
         try:
-            query = select(models.Run).where(models.Run.updated_at > after)
+            query = select(models.Run)
+            query = query.where(models.Run.status == models.RunStatus.CREATED)
             query = query.order_by(models.Run.updated_at)
-            logger.debug(f"QUERY: RunRepo.get_updates — {after.isoformat()}")
+            logger.debug("start: acquire created runs")
             result = session.execute(query)
             runs = result.scalars().all()
             for run in runs:
@@ -57,7 +57,5 @@ class RunRepo:
             session.commit()
         except SQLAlchemyError as e:
             session.rollback()
-            logger.exception(f"QUERY FAILED: "
-                             f"RunRepo.get_updates — after={after} "
-                             f" — {e}")
+            logger.exception("failed: acquire created runs %s", e)
         return runs
